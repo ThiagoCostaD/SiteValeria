@@ -139,15 +139,17 @@ h6 {
 }
 
 .main-content {
-    display: flex;
-    flex-direction: column-reverse;
-    justify-content: center;
-    align-items: center;
+    padding-top: 0;
 }
 
 .main-content-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
     gap: var(--spacing-gutter-large);
 }
+/*.main-content-list {
+    gap: var(--spacing-gutter-large);
+}*/
 
 .testemunho {
     background: var(--color-white);
@@ -163,7 +165,7 @@ h6 {
 }
 
 .testemunho-itens-lista {
-    max-width: 50%;
+    max-width: 64rem;
 }
 
 .testemunho-itens-lista:hover {
@@ -216,6 +218,17 @@ h6 {
     filter: brightness(2);
 }
 
+.main-content-detalhe{
+    .testemunho-itens-lista {
+        margin: 0 auto;
+        max-width: 84rem;
+    }
+    
+    .testemunho-itens-lista:hover {
+        transform: scale(1);
+        box-shadow: -5px 5px 10px rgba(0, 0, 0, .2);
+    }
+}
 .main-footer {
     display: flex;
     align-items: center;
