@@ -1,13 +1,11 @@
 {% extends 'global/base.html' %}
+
+{% block titulo %} Home | {% endblock titulo %}
+
 {% block content %}
         <div class="main-content main-content-list container">
-           {% include 'testemunhos/partials/testemunhos.html' %}
-           {% include 'testemunhos/partials/testemunhos.html' %}
-           {% include 'testemunhos/partials/testemunhos.html' %}
-           {% include 'testemunhos/partials/testemunhos.html' %}
-           {% include 'testemunhos/partials/testemunhos.html' %}
-           {% include 'testemunhos/partials/testemunhos.html' %}
-           {% include 'testemunhos/partials/testemunhos.html' %}
-           
+            {% for testemunho in testemunhos %}
+                {% include 'testemunhos/partials/testemunhos.html' %}
+            {% endfor %}
         </div>
 {% endblock content %}

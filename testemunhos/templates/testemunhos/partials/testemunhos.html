@@ -1,34 +1,32 @@
 <div class="testemunho testemunho-itens-lista">
 
     <div class="testemunho-img">
-        <img src="https://via.placeholder.com/1240x720.png/adff2f" alt="img">
+        <img src="{{testemunho.foto.url}}" alt="img">
     </div>
 
     <div class="testemunho-titulo-container">
-        <h2 class="testemunho-titulo">Lorem ipsum dolor sit amet.</h2>
+        <h2 class="testemunho-titulo">{{testemunho.titulo}}</h2>
     </div>
 
     <div class="testemunho-autor">
         <span class="testemunho-autor-item">
             <i class="fas fa-user"></i>
-            Valéria Costa
+            {{testemunho.autor.primeiro_nome}} {{testemunho.autor.ultimo_nome}}
         </span>
         <span class="testemunho-autor-item">
             <i class="fas fa-calendar-alt"></i>
-            30/06/2023 às 10:24
+            {{testemunho.data_criacao|date:"d/m/Y"}}
         </span>
         <span class="testemunho-autor-item">
             <a href="/testemunhos/categoria/oracao/">
                 <i class="fas fa-layer-group"></i>
-                <span>Oração</span>
+                <span>{{testemunho.categoria.name}}</span>
             </a>
         </span>
     </div>
 
     <div class="testemunho-content">
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magni fugiat commodi ullam quas modi.
-            Ea cumque labore veniam, sequi corrupti quas beatae fuga alias quae, vero dicta accusamus
-            aliquam in!</p>
+        <p>{{testemunho.descricao}}</p>
     </div>
     <footer class="testemunho-footer">
         <a class="recipe-read-more button button-dark button-full-width" href="/testemunhos/teste-1-2-3/">
