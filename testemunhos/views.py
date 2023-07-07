@@ -10,4 +10,5 @@ def home(request):
 def testemunho(request, id):
     return render(request, 'testemunhos/pages/testemunho-view.html', context={
         'testemunho': make_testemunho(),
+        'pagina_detalhada': True,
     })

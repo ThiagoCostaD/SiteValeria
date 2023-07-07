@@ -1,11 +1,17 @@
 <div class="testemunho testemunho-itens-lista">
 
     <div class="testemunho-img">
-        <img src="{{testemunho.foto.url}}" alt="img">
+        <a href="{% url 'testemunhos:testemunho' testemunho.id %}">
+            <img src="{{testemunho.foto.url}}" alt="img">
+        </a>
     </div>
 
     <div class="testemunho-titulo-container">
-        <h2 class="testemunho-titulo">{{testemunho.titulo}}</h2>
+        <h2 class="testemunho-titulo">
+            <a href="{% url 'testemunhos:testemunho' testemunho.id %}">
+                {{testemunho.titulo}}
+            </a>
+        </h2>
     </div>
 
     <div class="testemunho-autor">
@@ -28,11 +34,18 @@
     <div class="testemunho-content">
         <p>{{testemunho.descricao}}</p>
     </div>
-    <footer class="testemunho-footer">
-        <a class="recipe-read-more button button-dark button-full-width" href="/testemunhos/teste-1-2-3/">
-            <i class="fas fa-eye"></i>
-            <span>ver mais...</span>
-        </a>
-    </footer>
+    {% if pagina_detalhada is not True %}
+        <footer class="testemunho-footer">
+            <a class="recipe-read-more button button-dark button-full-width" href="{% url 'testemunhos:testemunho' testemunho.id %}">
+                <i class="fas fa-eye"></i>
+                <span>ver mais...</span>
+            </a>
+        </footer>
+    {% endif %}
 
+    {% if pagina_detalhada is True %}
+        <div class="testemunho-detalhado">
+            {{testemunho.testemunho| linebreaksbr}}
+        </div>
+    {% endif %}
 </div>

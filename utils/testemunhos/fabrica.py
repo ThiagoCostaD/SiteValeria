@@ -14,6 +14,7 @@ fake = Faker('pt_BR')
 
 def make_testemunho():
     return {
+        'id': fake.random_number(digits=2, fix_len=True),
         'titulo': fake.sentence(nb_words=6),
         'descricao': fake.sentence(nb_words=12),
         'testemunho': fake.text(3000),
