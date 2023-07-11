@@ -1,5 +1,4 @@
-from django.shortcuts import render
-# from utils.testemunhos.fabrica import make_testemunho
+from django.shortcuts import render, get_list_or_404, get_object_or_404
 from .models import Testemunho
 
 
@@ -12,19 +11,25 @@ def home(request):
 
 
 def categoria(request, categoria_id):
-    testemunhos = Testemunho.objects.filter(
-        categoria__id=categoria_id,
-        publicado=True
-    ).order_by('-id')
-    return render(request, 'testemunhos/pages/home.html', context={
-        'testemunhos': testemunhos})
+
+    testemunhos = get_list_or_404(
+        Testemunho.objects.filter(
+            categoria__id=categoria_id,
+            publicado=True
+        ).order_by('-id')
+    )
+
+    return render(request, 'testemunhos/pages/categoria.html', context={
+        'testemunhos': testemunhos,
+        'titulo': f'{testemunhos[0].categoria.nome} - Categoria |'
+    })
 
 
 def testemunho(request, id):
-    testemunhos = Testemunho.objects.filter(
-        publicado=True
-    )
+
+    testemunho = get_object_or_404(Testemunho, pk=id, publicado=True)
+
     return render(request, 'testemunhos/pages/testemunho-view.html', context={
-        'testemunho': testemunhos(),
+        'testemunho': testemunho,
         'pagina_detalhada': True,
     })

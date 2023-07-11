@@ -259,3 +259,15 @@ h6 {
 .main-footer a:hover {
     filter: brightness(.8);
 }
+
+.center{
+    text-align: center;
+}
+
+.m-y{
+    padding: var(--spacing-gutter-medium);
+}
+
+.m-x{
+    margin: var(--spacing-gutter-medium);
+}

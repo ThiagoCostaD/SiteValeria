@@ -20,10 +20,12 @@ class Testemunho(models.Model):
     publicado = models.BooleanField(default=False)
     foto = models.ImageField(upload_to='testemunhos/img/%Y/%m/%d/')
     categoria = models.ForeignKey(
-        Categoria, on_delete=models.SET_NULL, null=True
+        Categoria, on_delete=models.SET_NULL, null=True,
+        blank=True, default=None,
     )
     autor = models.ForeignKey(
-        User, on_delete=models.SET_NULL, null=True
+        User, on_delete=models.SET_NULL, null=True,
+        blank=True, default=None
     )
 
     def __str__(self):

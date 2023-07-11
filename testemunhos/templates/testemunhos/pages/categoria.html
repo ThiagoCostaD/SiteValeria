@@ -1,0 +1,11 @@
+{% extends 'global/base.html' %}
+
+{% block titulo %}{{titulo}}  {% endblock titulo %}
+
+{% block content %}
+        <div class="main-content main-content-list container">
+            {% for testemunho in testemunhos %}
+                {% include 'testemunhos/partials/testemunhos.html' %}
+            {% endfor %}
+        </div>
+{% endblock content %}
