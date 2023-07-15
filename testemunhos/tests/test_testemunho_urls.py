@@ -1,5 +1,5 @@
 from django.test import TestCase
-from django.urls import reverse, resolve
+from django.urls import reverse
 
 
 class TestemunhoURLsTest(TestCase):
@@ -13,12 +13,5 @@ class TestemunhoURLsTest(TestCase):
         self.assertEqual(url, '/testemunhos/categoria/1/')
 
     def test_testemunho_url_esta_correto(self):
-        url = reverse('testemunhos:testemunho', args=(1,))
+        url = reverse('testemunhos:testemunho', kwargs={'id': 1})
         self.assertEqual(url, '/testemunhos/1/')
-
-
-class TestemunhoViewsTest(TestCase):
-
-    def test_testemunho_home_view_esta_funcionando(self):
-        view = resolve('/')
-        self.assertIs()
