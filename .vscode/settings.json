@@ -5,7 +5,8 @@
     "explorer.compactFolders": false,
     "window.zoomLevel": 0.25,
     "editor.fontSize": 15,
-    "editor.fontFamily": "'Droid Sans Mono', 'monospace', monospace",
+    "editor.fontFamily": "Fira Code Retina",
+    "editor.fontLigatures": true,
 
     //Linguagens:
     "python.languageServer": "Pylance", // ms-python.vscode-pylance
@@ -85,6 +86,6 @@
     "git.autofetch": true,
     "git.confirmSync": false,
     "liveServer.settings.donotShowInfoMsg": true,
-    "workbench.colorTheme": "Dracula Soft",
+    "workbench.colorTheme": "Shades of Purple (Super Dark)",
     "python.formatting.provider": "none",
   }
