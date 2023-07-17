@@ -19,7 +19,7 @@ class Testemunho(models.Model):
         max_length=165, help_text='Descrição do testemunho', blank=False)
 
     slug = models.SlugField(
-        help_text='Slug do testemunho', blank=False, unique=True)
+        help_text='Slug do testemunho', blank=False)
 
     testemunho = models.TextField(help_text='Texto do testemunho', blank=False)
 
