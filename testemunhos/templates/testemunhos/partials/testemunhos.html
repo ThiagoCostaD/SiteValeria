@@ -29,7 +29,7 @@
         </span>
         <span class="testemunho-autor-item">
             <i class="fas fa-calendar-alt"></i>
-            {{testemunho.data_criacao|date:"d/m/Y"}}
+            {{testemunho.data_criacao|date:"d/m/Y"}} às {{ testemunho.data_criacao|date:"H:i" }}
         </span>
         {% if testemunho.categoria is not None %}
             <span class="testemunho-autor-item">
