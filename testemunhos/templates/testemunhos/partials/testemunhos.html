@@ -1,11 +1,11 @@
 <div class="testemunho testemunho-itens-lista">
-
-    <div class="testemunho-img">
-        <a href="{% url 'testemunhos:testemunho' testemunho.id %}">
-            <img src="{{testemunho.foto.url}}" alt="img">
-        </a>
-    </div>
-
+    {% if testemunho.foto.url is not Null %}
+        <div class="testemunho-img">
+            <a href="{% url 'testemunhos:testemunho' testemunho.id %}">
+                <img src="{{testemunho.foto.url}}" alt="img">
+            </a>
+        </div>
+    {% endif %}
     <div class="testemunho-titulo-container">
         <h2 class="testemunho-titulo">
             <a href="{% url 'testemunhos:testemunho' testemunho.id %}">
