@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
+
 from testemunhos.models import Categoria, Testemunho
 
 
@@ -7,7 +8,7 @@ class TestemunhoTestBase(TestCase):
     def setUp(self) -> None:
         return super().setUp()
 
-    def make_categoria(self, nome='Catergoria'):
+    def make_categoria(self, nome='Categoria'):
         return Categoria.objects.create(nome=nome)
 
     def make_autor(self, first_name='user',
