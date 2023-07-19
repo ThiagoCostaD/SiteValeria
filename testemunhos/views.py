@@ -1,7 +1,9 @@
 from venv import logger
+
 from django.http import Http404
-from django.shortcuts import render, get_list_or_404, get_object_or_404
+from django.shortcuts import get_list_or_404, get_object_or_404, render
 from django.views.decorators.cache import cache_page
+
 from .models import Testemunho
 
 
@@ -41,3 +43,7 @@ def testemunho(request, id):
         'testemunho': testemunho,
         'pagina_detalhada': True,
     })
+
+
+def busca(request):
+    return render(request, 'testesmunhos/pages/busca.html')

@@ -15,3 +15,7 @@ class TestemunhoURLsTest(TestCase):
     def test_testemunho_url_esta_correto(self):
         url = reverse('testemunhos:testemunho', kwargs={'id': 1})
         self.assertEqual(url, '/testemunhos/1/')
+
+    def test_url_de_busca_esta_ok(self):
+        url = reverse('testemunhos:busca')
+        self.assertEqual(url, '/testemunhos/busca/')
