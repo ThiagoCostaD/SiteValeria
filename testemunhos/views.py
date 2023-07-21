@@ -1,7 +1,10 @@
 from venv import logger
 
+from django.core.paginator import Paginator
+from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_list_or_404, get_object_or_404, render
+from django.utils.html import escape
 from django.views.decorators.cache import cache_page
 
 from .models import Testemunho
@@ -46,4 +49,32 @@ def testemunho(request, id):
 
 
 def busca(request):
-    return render(request, 'testesmunhos/pages/busca.html')
+    termo_busca = escape(
+        request.GET.get(
+            'busca', ''
+        ).strip()
+    )
+
+    if not termo_busca:
+        raise Http404()
+
+    testemunho = Testemunho.objects.filter(
+        Q(
+            Q(titulo__icontains=termo_busca) |
+            Q(descricao__icontains=termo_busca),
+        ),
+        publicado=True,
+    ).order_by('-id')
+
+    resultados = []  # search results
+    paginator = Paginator(resultados, 10)  # 10 results per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'testemunhos/pages/busca.html', {
+        'titulo_pagina': f'Pesquisando por "{termo_busca}"  ',
+        'page_obj': page_obj,
+        'termo_busca': termo_busca,
+        'testemunhos': testemunho,
+    }
+    )

@@ -35,7 +35,7 @@ class TestemunhoModelTest(TestemunhoTestBase):
 
     def test_testemunho_representação_string(self):
         frase = 'Teste representação'
-        self.testemunho.titulo = 'Teste representação '
+        self.testemunho.titulo = 'Teste representação'
         # self.testemunho.full_clean()
         self.testemunho.save()
         self.assertEqual(

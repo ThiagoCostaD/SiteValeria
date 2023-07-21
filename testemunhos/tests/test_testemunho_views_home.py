@@ -5,7 +5,7 @@ from testemunhos import views
 from .test_testemunho_base import TestemunhoTestBase
 
 
-class TestemunhoViewsTest(TestemunhoTestBase):
+class TestemunhoViewsHomeTest(TestemunhoTestBase):
 
     def test_testemunho_home_view_esta_funcionando(self):
         view = resolve(reverse('testemunhos:home'))
