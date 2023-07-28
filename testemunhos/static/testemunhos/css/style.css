@@ -149,9 +149,6 @@ h6 {
     grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
     gap: var(--spacing-gutter-large);
 }
-/*.main-content-list {
-    gap: var(--spacing-gutter-large);
-}*/
 
 .testemunho {
     background: var(--color-gray-1);
@@ -241,6 +238,26 @@ h6 {
 .testemunho-detalhado{
     padding: var(--spacing-gutter-medium);
 }
+
+.pagination-content {
+    display: flex;
+    flex-flow: row wrap;
+    gap: var(--spacing-gutter-small);
+  }
+  .pagination .page-item {
+    background: var(--color-gray-3);
+    padding: 0.5rem 1rem;
+  }
+  
+  .pagination .page-link {
+    text-decoration: none;
+    background: var(--color-primary-dark);
+    color: var(--color-white);
+  }
+  
+  .pagination .page-current {
+    background: var(--color-black);
+  }
 
 .main-footer {
     display: flex;
