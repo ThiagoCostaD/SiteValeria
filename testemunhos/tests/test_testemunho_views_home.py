@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 from django.urls import resolve, reverse
 
 from testemunhos import views
@@ -52,3 +54,18 @@ class TestemunhoViewsHomeTest(TestemunhoTestBase):
             'Não temos nenhum testemunho por enquanto, volte em breve',
             response.content.decode('utf-8')
         )
+
+    def test_testemunho_home_esta_paginando(self):
+        for i in range(9):
+            kwargs = {'slug': f'r{i}', 'autor': {'username': f'u{i}'}}
+            self.make_testemunho(**kwargs)
+
+        with patch('testemunhos.views.PER_PAGE', new=3):
+            response = self.client.get(reverse('testemunhos:home'))
+            testemunhos = response.context['testemunhos']
+            paginator = testemunhos.paginator
+
+            self.assertEqual(paginator.num_pages, 3)
+            self.assertEqual(len(paginator.get_page(1)), 3)
+            self.assertEqual(len(paginator.get_page(2)), 3)
+            self.assertEqual(len(paginator.get_page(3)), 2)
