@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.http import Http404
 from django.shortcuts import redirect, render
 
@@ -27,5 +28,12 @@ def criação_resgistro(request):
     request.session['register_form_data'] = POST
 
     form = RegistroForm(POST)
+
+    if form.is_valid():
+        form.save()
+        messages.success(
+            request, 'Seu usuário foi criado, por favor faça o login.')
+
+        del (request.session['register_form_data'])
 
     return redirect('autores:registro')
