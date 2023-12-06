@@ -86,6 +86,6 @@
     "git.autofetch": true,
     "git.confirmSync": false,
     "liveServer.settings.donotShowInfoMsg": true,
-    "workbench.colorTheme": "Shades of Purple",
+    "workbench.colorTheme": "Monokai Classic",
     "python.formatting.provider": "none",
   }
