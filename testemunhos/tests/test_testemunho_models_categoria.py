@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from .test_testemunho_base import TestemunhoTestBase
 
 
-class TestemunhoModelTest(TestemunhoTestBase):
+class TestemunhoModelCatergoriaTest(TestemunhoTestBase):
     def setUp(self) -> None:
         self.categoria = self.make_categoria(
             nome='Testando Categoria'

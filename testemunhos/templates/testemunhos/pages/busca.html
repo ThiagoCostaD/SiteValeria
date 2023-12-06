@@ -1,0 +1,20 @@
+{% extends 'global/base.html' %}
+
+{% block titulo %} {{titulo_pagina}} | {% endblock titulo %}
+
+{% block content %}
+
+
+
+<div class="main-content main-content-list container">
+{% for testemunho in testemunhos %}
+    {% include 'testemunhos/partials/testemunhos.html' %}
+{% empty %}
+<div class="center m-x m-y">
+    <h1>
+        Não temos nenhum testemunho por enquanto, volte em breve
+    </h1>
+</div>
+{% endfor %}
+</div>
+{% endblock content %}
