@@ -1,7 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.http.request import T
-
-from .test_testimonials_base import TestimonialsTestBase
+from tests.test_testimonials_base import TestimonialsTestBase
 
 
 class TestimonyModelCatergoryTest(TestimonialsTestBase):

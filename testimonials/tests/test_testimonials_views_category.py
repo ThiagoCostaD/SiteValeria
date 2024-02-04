@@ -1,56 +1,57 @@
-from django.urls import resolve, reverse
+from django.http.response import HttpResponse
+from django.urls import ResolverMatch, resolve, reverse
 
 from testimonials import views
 
-from .test_testimonials_base import TestemunhoTestBase
+from .test_testimonials_base import TestimonialsTestBase
 
 
-class TestemunhoViewsCategoriaTest(TestemunhoTestBase):
-    def test_testemunho_categoria_view_esta_funcionando(self):
-        view = resolve(
+class TestimonialViewsCategoriaTest(TestimonialsTestBase):
+    def test_testemunho_categoria_view_esta_operando(self) -> None:
+        view: ResolverMatch = resolve(
             reverse(
-                'testemunhos:categoria',
+                'testimonials:category',
                 kwargs={
-                    'categoria_id': 1000
+                    'category_id': 1000
                 }
             )
         )
-        self.assertIs(view.func, views.categoria)
+        self.assertIs(view.func, views.category)
 
-    def test_testemunho_categoria_view_retorna_404_se_não_tiver_testemunhos(self):  # noqa: E501
-        response = self.client.get(
+    def test_test_testimony_category_view_retorna_404_se_não_tiver_testimonhos(self) -> None:  # noqa: E501
+        response: HttpResponse = self.client.get(
             reverse(
-                'testemunhos:categoria',
+                'testimonials:category',
                 kwargs={
-                    'categoria_id': 10000
+                    'category_id': 10000
                 }
             )
         )
         self.assertEqual(response.status_code, 404)
 
-    def test_testemunhos_categoria_templates_carrega_testemunho(self):
-        o_titulo = 'Esse é o teste da categoria'
+    def test_testimonies_category_templates_load_testimony(self):
+        the_title = 'This is the category test'
 
-        self.make_testemunho(titulo=o_titulo)
-        response = self.client.get(
+        self.make_testimony(title=the_title)
+        response: HttpResponse = self.client.get(
             reverse(
-                'testemunhos:categoria',
+                'testimonials:category',
                 args=(1, )
             )
         )
         content = response.content.decode('utf-8')
 
-        self.assertIn(o_titulo, content)
+        self.assertIn(the_title, content)
 
-    def test_testemunhos_categoria_não_publicada(self):
-        """testando se os testemunhos que estão marcados como não publicdos passam no teste"""  # noqa: E501
-        testemunho = self.make_testemunho(publicado=False)
+    def test_testimonies_unpublished_category(self) -> None:
+        """testing whether testimonials that are marked as unpublished pass the test"""  # noqa: E501
+        testimony = self.make_testimony(published=False)
 
-        response = self.client.get(
+        response: HttpResponse = self.client.get(
             reverse(
-                'testemunhos:testemunho',
+                'testimonies:testimony',
                 kwargs={
-                    'id': testemunho.categoria.id
+                    'id': testimony.category.id
                 }
             )
         )

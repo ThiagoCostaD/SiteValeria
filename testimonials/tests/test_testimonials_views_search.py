@@ -1,60 +1,62 @@
-from django.urls import resolve, reverse
+from django.http.response import HttpResponse
+from django.urls import ResolverMatch, resolve, reverse
 
 from testimonials import views
 
-from .test_testimonials_base import TestemunhoTestBase
+from .test_testimonials_base import TestimonialsTestBase
 
 
-class TestemunhoViewsTest(TestemunhoTestBase):
+class TestemunhoViewsTest(TestimonialsTestBase):
 
-    def test_testemunho_busca_esta_funcionando(self):
-        url = reverse('testemunhos:busca')
-        resolved = resolve(url)
-        self.assertIs(resolved.func, views.busca)
+    def test_testimony_search_is_working(self) -> None:
+        url: str = reverse('testimonials:search')
+        resolved: ResolverMatch = resolve(url)
+        self.assertIs(resolved.func, views.search)
 
-    def teste_testemunho_busca_carreg_o_template(self):
-        response = self.client.get(
+    def test_testimony_search_load_any_template(self) -> None:
+        response: HttpResponse = self.client.get(
             reverse(
-                'testemunhos:busca'
-            ) + '?busca=teste'
+                'testimonials:search'
+            ) + '?search=test'
         )
-        self.assertTemplateUsed(response, 'testemunhos/pages/busca.html')
+        self.assertTemplateUsed(response, 'testimonies/pages/busca.html')
 
-    def test_testemunho_busca_sem_nada_levantar_404(self):
-        response = self.client.get(
-            reverse('testemunhos:busca')
+    def test_testemunho_busca_sem_nada_levantar_404(self) -> None:
+        response: HttpResponse = self.client.get(
+            reverse('testimonials:search')
         )
         self.assertEqual(response.status_code, 404)
 
-    def test_testemunnho_busca_termo_aparece_no_titulo(self):
-        url = reverse('testemunhos:busca') + '?busca=Teste'
-        response = self.client.get(url)
+    def test_testimony_search_term_trim_in_title(self) -> None:
+        url: str = reverse('testimonials:search') + '?search=Test'
+        response: HttpResponse = self.client.get(url)
         self.assertIn(
-            ' Pesquisando por &quot;Teste&quot;   ',
+            ' Searching for &quot;Test&quot; ',
             response.content.decode('utf-8')
         )
 
-    def test_testemunho_busca_nao_aparece_o_titulo_buscado(self):
-        titulo1 = "Esse é o um"
-        titulo2 = 'Esse é o dois'
 
-        testemunho1 = self.make_testemunho(
-            slug='um', titulo=titulo1, autor_data={'username': 'um'},
-        )
+def test_testemunho_busca_nao_apare_o_title_buscado(self) -> None:
+    title1 = "This is the one"
+    title2 = 'This is two'
 
-        testemunho2 = self.make_testemunho(
-            slug='dois', titulo=titulo2, autor_data={'username': 'dois'},
-        )
-        busca_url = reverse('testemunhos:busca')
-        response1 = self.client.get(f'{busca_url}?busca={titulo1}')
-        response2 = self.client.get(f'{busca_url}?busca={titulo2}')
-        response_both = self.client.get(f'{busca_url}?busca=Esse')
+    testimonial1 = self.make_testimony(
+        slug='one', title=title1, author_data={'username': 'one'},
+    )
 
-        self.assertIn(testemunho1, response1.context['testemunhos'])
-        self.assertNotIn(testemunho2, response1.context['testemunhos'])
+    testimonial2 = self.make_testimony(
+        slug='two', title=title2, author_data={'username': 'two'},
+    )
+    search_url: str = reverse('testimonials: search')
+    response1: HttpResponse = self.client.get(f'{search_url}?busca={title1}')
+    response2: HttpResponse = self.client.get(f'{search_url}?busca={title2}')
+    response_both: HttpResponse = self.client.get(f'{search_url}?busca=Esse')
 
-        self.assertIn(testemunho2, response2.context['testemunhos'])
-        self.assertNotIn(testemunho1, response2.context['testemunhos'])
+    self.assertIn(testimonial1, response1.context['testimonials'])
+    self.assertNotIn(testimonial2, response1.context['testimonials'])
 
-        self.assertIn(testemunho1, response_both.context['testemunhos'])
-        self.assertIn(testemunho2, response_both.context['testemunhos'])
+    self.assertIn(testimonial2, response2.context['testimonials'])
+    self.assertNotIn(testimonial1, response2.context['testimonials'])
+
+    self.assertIn(testimonial1, response_both.context['testimonials'])
+    self.assertIn(testimonial2, response_both.context['testimonials'])

@@ -1,69 +1,70 @@
+from cgi import test
 from unittest.mock import patch
 
 from django.urls import resolve, reverse
 
 from testimonials import views
 
-from .test_testimonials_base import TestemunhoTestBase
+from .test_testimonials_base import TestimonialsTestBase
 
 
-class TestemunhoViewsHomeTest(TestemunhoTestBase):
+class TestemunhoViewsHomeTest(TestimonialsTestBase):
 
-    def test_testemunho_home_view_esta_funcionando(self):
-        view = resolve(reverse('testemunhos:home'))
-        self.assertIs(view.func, views.home)
+    def test_testemunho_home_view_esta_operando(self):
+         view = resolve(reverse('testimonials:home'))
+         self.assertIs(view.func, views.home)
 
-    def test_testemunho_home_view_retorna_status_200_ok(self):
-        response = self.client.get(reverse('testemunhos:home'))
+    def test_test_home_view_retorna_status_200_ok(self):
+        response = self.client.get(reverse('testimonials:home'))
         self.assertEqual(response.status_code, 200)
 
-    def test_testemunho_home_view_loads_correct_template(self):
-        response = self.client.get(reverse('testemunhos:home'))
-        self.assertTemplateUsed(response, 'testemunhos/pages/home.html')
+    def test_test_home_view_loads_correct_template(self):
+        response = self.client.get(reverse('testimonials:home'))
+        self.assertTemplateUsed(response, 'testimonials/pages/home.html')
 
-    def test_testemunho_home_sem_testemunho(self):
-        response = self.client.get(reverse('testemunhos:home'))
+    def test_test_test_home_sem_testimony(self):
+        response = self.client.get(reverse('testimonials:home'))
         self.assertIn(
-            'Não temos nenhum testemunho por enquanto, volte em breve',
+            'We don't have any testimony for now, come back soon'\
             response.content.decode('utf-8')
-        )
+            )
 
-    def test_testemunhos_home_templates_carrega_testemunho(self):
-        self.make_testemunho()
-        response = self.client.get(reverse('testemunhos:home'))
-        response_testemunhos = response.context['testemunhos']
+    def test_testimonies_home_templates_load_testimony(self):
+        self.make_testimony()
+        response = self.client.get(reverse('testimonials:home'))
+        response_testimonials = response.context['testimonials']
         content = response.content.decode('utf-8')
 
         self.assertEqual(
             len(response.context
-                ['testemunhos']), 1
+                ['testimonies']), 1
         ),
         self.assertEqual(
-            response_testemunhos.first().titulo,
-            'Testemunho titulo'
+            response_Testimony.first().title,
+            'Title testimony'
         ),
-        self.assertIn('Testemunho titulo', content)
-        self.assertIn('Testemunho', content)
+        self.assertIn('Testimony title', content)
+        self.assertIn('Testimony', content)
 
-    def test_testemunhos_home_não_publicados(self):
-        """testando se os testemunhos que estão marcados como não publicdos passam no teste"""  # noqa: E501
-        self.make_testemunho(publicado=False)
-        response = self.client.get(reverse('testemunhos:home'))
+    def test_test_test_home_not_published(self):
+        """testing whether testimonials that are marked as unpublished pass the test""" # noqa: E501
+        self.make_testimony(published=False)
+        response = self.client.get(reverse('testimonials:home'))
 
         self.assertIn(
-            'Não temos nenhum testemunho por enquanto, volte em breve',
+            'We don't have any testimony for now, come back soon',
             response.content.decode('utf-8')
         )
 
     def test_testemunho_home_esta_paginando(self):
         for i in range(9):
-            kwargs = {'slug': f'r{i}', 'autor': {'username': f'u{i}'}}
-            self.make_testemunho(**kwargs)
+            kwargs = {'slug': f'r{i}', 'author': {'username': f'u{i}'}}
+            self.make_testimony(**kwargs)
 
-        with patch('testemunhos.views.PER_PAGE', new=3):
-            response = self.client.get(reverse('testemunhos:home'))
-            testemunhos = response.context['testemunhos']
-            paginator = testemunhos.paginator
+        with patch('testimonies.views.PER_PAGE', new=3):
+            response = self.client.get(reverse('testimonials:home'))
+            testimonials = response.context['testimonials']
+            paginator = testimonials.paginator
 
             self.assertEqual(paginator.num_pages, 3)
             self.assertEqual(len(paginator.get_page(1)), 3)
