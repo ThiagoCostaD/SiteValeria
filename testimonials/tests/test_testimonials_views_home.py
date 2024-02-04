@@ -2,9 +2,9 @@ from unittest.mock import patch
 
 from django.urls import resolve, reverse
 
-from testemunhos import views
+from testimonials import views
 
-from .test_testemunho_base import TestemunhoTestBase
+from .test_testimonials_base import TestemunhoTestBase
 
 
 class TestemunhoViewsHomeTest(TestemunhoTestBase):

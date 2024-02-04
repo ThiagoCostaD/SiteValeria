@@ -1,8 +1,8 @@
 from django.urls import resolve, reverse
 
-from testemunhos import views
+from testimonials import views
 
-from .test_testemunho_base import TestemunhoTestBase
+from .test_testimonials_base import TestemunhoTestBase
 
 
 class TestemunhoViewsTest(TestemunhoTestBase):
@@ -46,9 +46,9 @@ class TestemunhoViewsTest(TestemunhoTestBase):
             slug='dois', titulo=titulo2, autor_data={'username': 'dois'},
         )
         busca_url = reverse('testemunhos:busca')
-        response1 = self.client.get(f'{ busca_url }?busca={titulo1}')
-        response2 = self.client.get(f'{ busca_url }?busca={titulo2}')
-        response_both = self.client.get(f'{ busca_url }?busca=Esse')
+        response1 = self.client.get(f'{busca_url}?busca={titulo1}')
+        response2 = self.client.get(f'{busca_url}?busca={titulo2}')
+        response_both = self.client.get(f'{busca_url}?busca=Esse')
 
         self.assertIn(testemunho1, response1.context['testemunhos'])
         self.assertNotIn(testemunho2, response1.context['testemunhos'])
