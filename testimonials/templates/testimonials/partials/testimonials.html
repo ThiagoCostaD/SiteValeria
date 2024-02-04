@@ -1,63 +1,63 @@
-<div class="testemunho testemunho-itens-lista">
-    {% if testemunho.foto.url is not Null %}
-        <div class="testemunho-img">
-            <a href="{% url 'testemunhos:testemunho' testemunho.id %}">
-                <img src="{{testemunho.foto.url}}" alt="img">
+<div class="testimony testimony-items-list">
+    {% if testimony.photo.url is not Null %}
+        <div class="testimony-img">
+            <a href="{% url 'testimonials:testimony' testimony.id %}">
+                <img src="{{testimony.photo.url}}" alt="img">
             </a>
         </div>
     {% endif %}
-    <div class="testemunho-titulo-container">
-        <h2 class="testemunho-titulo">
-            <a href="{% url 'testemunhos:testemunho' testemunho.id %}">
-                {{testemunho.titulo}}
+    <div class="testimony-title-container">
+        <h2 class="testimony-title">
+            <a href="{% url 'testimonials:testimony' testimony.id %}">
+                {{testimony.title}}
             </a>
         </h2>
     </div>
 
-    <div class="testemunho-autor">
-        <span class="testemunho-autor-item">
+    <div class="testimony-author">
+        <span class="testimony-author-item">
             <i class="fas fa-user"></i>
-            {% if testemunho.autor is not None %}
-                {% if testemunho.autor.first_name %}
-                    {{testemunho.autor.first_name}} {{testemunho.autor.last_name}}
+            {% if testimony.author is not None %}
+                {% if testimony.author.first_name %}
+                    {{testimony.author.first_name}} {{testimony.author.last_name}}
                 {% else %}
-                    {{ testemunho.autor.username}}
+                    {{ testimony.author.username}}
                 {% endif %}
             {% else %}
-                Desconhecido
+                Unknown
             {% endif %}
         </span>
-        <span class="testemunho-autor-item">
+        <span class="testimony-author-item">
             <i class="fas fa-calendar-alt"></i>
-            {{testemunho.data_criacao|date:"d/m/Y"}} às {{ testemunho.data_criacao|date:"H:i" }}
+            {{testimony.date_creation|date:"d/m/Y"}} às {{ testimony.date_creation|date:"H:i" }}
         </span>
-        {% if testemunho.categoria is not None %}
-            <span class="testemunho-autor-item">
-                <a href="{% url 'testemunhos:categoria' testemunho.categoria.id %}">
+        {% if testimony.category is not None %}
+            <span class="testimony-author-item">
+                <a href="{% url 'testimonials:category' testimony.category.id %}">
                     <i class="fas fa-layer-group"></i>
-                    <span>{{testemunho.categoria.nome}}</span>
+                    <span>{{testimony.category.name}}</span>
                 </a>
             </span>
         {% endif %}
     </div>
 
-    {% if pagina_detalhada is not True %}
-        <div class="testemunho-content">
-            <p>{{testemunho.descricao}}</p>
+    {% if detail_page is not True %}
+        <div class="testimony-content">
+            <p>{{testimony.description}}</p>
         </div>
 
-        <footer class="testemunho-footer">
-            <a class="recipe-read-more button button-dark button-full-width" href="{% url 'testemunhos:testemunho' testemunho.id %}">
+        <footer class="testimony-footer">
+            <a class="recipe-read-more button button-dark button-full-width" href="{% url 'testimonials:testimony' testimony.id %}">
                 <i class="fas fa-eye"></i>
-                <span>ver mais...</span>
+                <span>View more...</span>
             </a>
         </footer>
 
     {% endif %}
 
-    {% if pagina_detalhada is True %}
-        <div class="testemunho-detalhado">
-            {{testemunho.testemunho| linebreaksbr}}
+    {% if detail_page is True %}
+        <div class="detail-testimony">
+            {{testimony.testimony| linebreaksbr}}
         </div>
     {% endif %}
 </div>
