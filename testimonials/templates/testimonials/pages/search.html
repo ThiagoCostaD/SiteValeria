@@ -1,18 +1,18 @@
 {% extends 'global/base.html' %}
 
-{% block titulo %} {{titulo_pagina}} | {% endblock titulo %}
+{% block title %} {{title_page}} | {% endblock title %}
 
 {% block content %}
 
 
 
 <div class="main-content main-content-list container">
-{% for testemunho in testemunhos %}
-    {% include 'testemunhos/partials/testemunhos.html' %}
+{% for testimony in testimonials %}
+    {% include 'testimonials/partials/testimonials.html' %}
 {% empty %}
 <div class="center m-x m-y">
     <h1>
-        Não temos nenhum testemunho por enquanto, volte em breve
+        We don't have any testimonials yet, check back soon
     </h1>
 </div>
 {% endfor %}

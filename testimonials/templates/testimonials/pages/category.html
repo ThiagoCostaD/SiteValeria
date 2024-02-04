@@ -1,11 +1,11 @@
 {% extends 'global/base.html' %}
 
-{% block titulo %}{{titulo}}  {% endblock titulo %}
+{% block title %}{{title}}  {% endblock title %}
 
 {% block content %}
         <div class="main-content main-content-list container">
-            {% for testemunho in testemunhos %}
-                {% include 'testemunhos/partials/testemunhos.html' %}
+            {% for testimony in testimonials %}
+                {% include 'testimonials/partials/testimonials.html' %}
             {% endfor %}
         </div>
 {% endblock content %}
