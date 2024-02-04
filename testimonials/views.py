@@ -4,9 +4,11 @@ from venv import logger
 # from django.contrib import messages
 from django.db.models import Q
 from django.db.models.manager import BaseManager
+from django.db.utils import OperationalError
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_list_or_404, get_object_or_404, render
 from django.utils.html import escape
+from django.utils.safestring import SafeText
 
 from utils.pagination import make_pagination
 
@@ -29,7 +31,7 @@ def home(request) -> HttpResponse:
     })
 
 
-def category(request, categoria_id) -> HttpResponse:
+def category(request, category_id) -> HttpResponse:
 
     testimonials: list[Testimony] = get_list_or_404(
         Testimony.objects.filter(
@@ -64,33 +66,33 @@ def testimony(request, id) -> HttpResponse:
                   })
 
 
-def busca(request):
-    termo_busca = escape(
+def search(request) -> HttpResponse:
+    term_search: SafeText = escape(
         request.GET.get(
-            'busca', ''
+            'search', ''
         ).strip()
     )
 
-    if not termo_busca:
+    if not term_search:
         raise Http404()
 
     testimonials = testimony.objects.filter(
         Q(
-            Q(titulo__icontains=termo_busca)
-            | Q(descricao__icontains=termo_busca),
+            Q(titulo__icontains=term_search)
+            | Q(descricao__icontains=term_search),
         ),
         publicado=True,
-    ).order_by('-data_criacao')
+    ).order_by('-date_creation')
 
     page_obj, pagination_range = make_pagination(
         request, testimonials, PER_PAGE)
 
-    return render(request, 'testimonials/pages/busca.html',
+    return render(request, 'testimonials/pages/search.html',
                   {
-                      'titulo_pagina': f'Pesquisando por "{termo_busca}"  ',
-                      'termo_busca': termo_busca,
+                      'titulo_pagina': f'Searching for "{term_search}"  ',
+                      'term_search': term_search,
                       'testimonials': page_obj,
                       'pagination_range': pagination_range,
-                      'additional_url_query': f'&busca={termo_busca}',
+                      'additional_url_query': f'&search={term_search}',
                   }
                   )
