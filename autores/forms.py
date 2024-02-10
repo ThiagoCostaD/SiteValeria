@@ -35,12 +35,12 @@ class RegistroForm(forms.ModelForm):
         add_placeholder(self.fields['email'], 'Seu e-mail')
         add_placeholder(self.fields['first_name'], 'Ex.: John')
         add_placeholder(self.fields['last_name'], 'Ex.: Doe')
-        add_attr(self.fields['username'], 'css', 'a-css-class')
+        add_placeholder(self.fields['password'], 'Sua senha')
+        add_placeholder(self.fields['password2'], 'Repita a sua senha')
+
     password = forms.CharField(
         required=True,
-        widget=forms.PasswordInput(attrs={
-            'placeholder': 'Sua Senha'
-        }),
+        widget=forms.PasswordInput(),
         error_messages={
             'required': 'A senha não deve estar vazia'
         },
@@ -82,14 +82,6 @@ class RegistroForm(forms.ModelForm):
             'username': {
                 'required': 'Este campo não deve estar vazio',
             }
-        }
-        widgets = {
-            'first_name': forms.TextInput(attrs={
-                'class': 'input text-input'
-            }),
-            'password': forms.PasswordInput(attrs={
-                'placeholder': 'Digite sua senha aqui'
-            })
         }
 
     def clean_password(self) -> Any | None:
