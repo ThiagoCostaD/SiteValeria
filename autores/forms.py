@@ -1,21 +1,22 @@
 import re
+from typing import Any
 
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
 
-def add_attr(field, attr_name, attr_new_val):
+def add_attr(field, attr_name, attr_new_val) -> None:
     existing = field.widget.attrs.get(attr_name, '')
     field.widget.attrs[attr_name] = f'{existing} {attr_new_val}'.strip()
 
 
-def add_placeholder(field, placeholder_val):
+def add_placeholder(field, placeholder_val) -> None:
     add_attr(field, 'placeholder', placeholder_val)
 
 
-def strong_password(password):
-    regex = re.compile(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}$')
+def strong_password(password) -> None:
+    regex: re.Pattern[str] = re.compile(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}$')
 
     if not regex.match(password):
         raise ValidationError((
@@ -28,7 +29,7 @@ def strong_password(password):
 
 
 class RegistroForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         add_placeholder(self.fields['username'], 'Seu nome de usuário')
         add_placeholder(self.fields['email'], 'Seu e-mail')
@@ -59,7 +60,7 @@ class RegistroForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = [
+        fields: list[str] = [
             'first_name',
             'last_name',
             'username',
@@ -67,17 +68,17 @@ class RegistroForm(forms.ModelForm):
             'password',
         ]
         # exclude = ['first_name']
-        labels = {
+        labels: dict[str, str] = {
             'username': 'Nome de usuário',
             'first_name': 'Nome',
             'last_name': 'Sobrenome',
             'email': 'E-mail',
             'password': 'Senha',
         }
-        help_texts = {
+        help_texts: dict[str, str] = {
             'email': 'O e-mail deve ser válido.',
         }
-        error_messages = {
+        error_messages: dict[str, dict[str, str]] = {
             'username': {
                 'required': 'Este campo não deve estar vazio',
             }
@@ -91,8 +92,8 @@ class RegistroForm(forms.ModelForm):
             })
         }
 
-    def clean_password(self):
-        data = self.cleaned_data.get('password')
+    def clean_password(self) -> Any | None:
+        data: Any | None = self.cleaned_data.get('password')
         if 'atenção' in data:
             raise ValidationError(
                 'Não digite %(pipoca)s no campo password',
@@ -112,8 +113,8 @@ class RegistroForm(forms.ModelForm):
 
         return data
 
-    def clean(self):
-        cleaned_data = super().clean()
+    def clean(self) -> None:
+        cleaned_data: dict[str, Any] = super().clean()
 
         password = cleaned_data.get('password')
         password2 = cleaned_data.get('password2')
