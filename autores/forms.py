@@ -49,13 +49,15 @@ class RegistroForm(forms.ModelForm):
             'uma letra minúscula e um número. O comprimento deve ser '
             'pelo menos 8 caracteres.'
         ),
-        validators=[strong_password]
+        validators=[strong_password],
+        label='Senha',
     )
     password2 = forms.CharField(
         required=True,
         widget=forms.PasswordInput(attrs={
             'placeholder': 'Repita a sua senha'
-        })
+        }),
+        label='Repita a sua senha',
     )
 
     class Meta:
@@ -67,43 +69,23 @@ class RegistroForm(forms.ModelForm):
             'email',
             'password',
         ]
-        # exclude = ['first_name']
+
         labels: dict[str, str] = {
             'username': 'Nome de usuário',
             'first_name': 'Nome',
             'last_name': 'Sobrenome',
             'email': 'E-mail',
-            'password': 'Senha',
         }
+
         help_texts: dict[str, str] = {
             'email': 'O e-mail deve ser válido.',
         }
+
         error_messages: dict[str, dict[str, str]] = {
             'username': {
                 'required': 'Este campo não deve estar vazio',
             }
         }
-
-    def clean_password(self) -> Any | None:
-        data: Any | None = self.cleaned_data.get('password')
-        if 'atenção' in data:
-            raise ValidationError(
-                'Não digite %(pipoca)s no campo password',
-                code='invalid',
-                params={'pipoca': '"atenção"'}
-            )
-        return data
-
-    def clean_first_name(self):
-        data = self.cleaned_data.get('first_name')
-        if 'John Doe' in data:
-            raise ValidationError(
-                'Não digite %(value)s no campo nome',
-                code='invalid',
-                params={'value': '"John Doe"'}
-            )
-
-        return data
 
     def clean(self) -> None:
         cleaned_data: dict[str, Any] = super().clean()
