@@ -1,6 +1,9 @@
+from dataclasses import field
 from multiprocessing import current_process
+from unittest import TestCase
 
-from django.test import TestCase
+from django.test import TestCase as DjangoTestCase
+from django.urls import reverse
 from parameterized import parameterized
 
 from autores.forms import RegistroForm
@@ -49,3 +52,28 @@ class AutorRegistroFormUnitTest(TestCase):
         form = RegistroForm()
         current = form[field].fields.label
         self.assertEqual(current, needed)
+
+
+class AutorRegistroFormIntegrationTest(DjangoTestCase):
+
+    def setUp(self, *args, **kwargs):
+        self.form_data = {
+            'username': 'user',
+            'first_name': 'first',
+            'last_name': 'last',
+            'email': 'email@email.com',
+            'password': 'F4k3P@ssw0rd',
+            'password2': 'F4k3P@ssw0rd',
+        }
+        return super().setUp(*args, **kwargs)
+
+    @parameterized.expand([
+        ('username', 'este campo é obrigatório'),
+
+    ])
+    def test_fields_cannot_be_empty(self, field, msg):
+
+        self.form_data[field] = ''
+        url = reverse('autores:criação')
+        response = self.client.post(url, data=self.form_data)
+        self.assertIn(msg, response.content.decode('utf-8'))
