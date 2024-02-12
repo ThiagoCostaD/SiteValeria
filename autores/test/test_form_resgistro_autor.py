@@ -16,7 +16,24 @@ class AutorRegistroFormUnitTest(TestCase):
         ('password', 'Sua senha'),
         ('password2', 'Repita a sua senha'),
     ])
-    def test_fist_name_placeholder_is_correct(self, field, placeholder):
+    def test_fields_placeholder(self, field, placeholder):
         form = RegistroForm()
-        current_placeholder = form[field].fields.widget.attrs['placeholder']
-        self.assertEqual(placeholder, current_placeholder)
+        current_placeholder = form[field].field.widget.attrs['placeholder']
+        self.assertEqual(current_placeholder, placeholder)
+
+    @parameterized.expand([
+        ('username', (
+            'Obrigatório. 150 caracteres ou menos. '
+            'Letras, números e @/./+/-/_ apenas.')),
+        ('password', (
+            'A senha deve ter pelo menos uma letra maiúscula, '
+            'uma letra minúscula e um número. O comprimento deve ser '
+            'pelo menos 8 caracteres.'
+        )),
+        ('email', 'O e-mail deve ser válido.'),
+
+    ])
+    def test_fields_help_text(self, field, needed):
+        form = RegistroForm()
+        current = form[field].fields.fields_help
+        self.assertEqual(current, needed)
