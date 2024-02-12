@@ -1,3 +1,4 @@
+import email
 import re
 from typing import Any
 
@@ -38,8 +39,23 @@ class RegistroForm(forms.ModelForm):
         add_placeholder(self.fields['password'], 'Sua senha')
         add_placeholder(self.fields['password2'], 'Repita a sua senha')
 
+    first_name = forms.CharField(
+        error_messages={'required': 'Escreva seu primeiro nome'},
+        label='Nome',
+    )
+
+    last_name = forms.CharField(
+        error_messages={'required': 'Escreva seu sobrenome'},
+        label='Sobrenome',
+    )
+
+    email = forms.EmailField(
+        error_messages={'required': 'O e-mail não deve estar vazio'},
+        help_text='O e-mail deve ser válido.',
+        label='E-mail',
+    )
+
     password = forms.CharField(
-        required=True,
         widget=forms.PasswordInput(),
         error_messages={
             'required': 'A senha não deve estar vazia'
@@ -53,10 +69,9 @@ class RegistroForm(forms.ModelForm):
         label='Senha',
     )
     password2 = forms.CharField(
-        required=True,
-        widget=forms.PasswordInput(attrs={
-            'placeholder': 'Repita a sua senha'
-        }),
+        error_messages={
+            'required': 'Repita a sua senha'
+        },
         label='Repita a sua senha',
     )
 
@@ -75,10 +90,6 @@ class RegistroForm(forms.ModelForm):
             'first_name': 'Nome',
             'last_name': 'Sobrenome',
             'email': 'E-mail',
-        }
-
-        help_texts: dict[str, str] = {
-            'email': 'O e-mail deve ser válido.',
         }
 
         error_messages: dict[str, dict[str, str]] = {

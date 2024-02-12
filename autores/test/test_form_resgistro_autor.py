@@ -1,5 +1,3 @@
-from dataclasses import field
-from multiprocessing import current_process
 from unittest import TestCase
 
 from django.test import TestCase as DjangoTestCase
@@ -28,17 +26,16 @@ class AutorRegistroFormUnitTest(TestCase):
         ('username', (
             'Obrigatório. 150 caracteres ou menos. '
             'Letras, números e @/./+/-/_ apenas.')),
+        ('email', 'O e-mail deve ser válido.'),
         ('password', (
             'A senha deve ter pelo menos uma letra maiúscula, '
             'uma letra minúscula e um número. O comprimento deve ser '
             'pelo menos 8 caracteres.'
         )),
-        ('email', 'O e-mail deve ser válido.'),
-
     ])
     def test_fields_help_text(self, field, needed):
         form = RegistroForm()
-        current = form[field].fields.fields_help
+        current = form[field].field.help_text
         self.assertEqual(current, needed)
 
     @parameterized.expand([
@@ -50,7 +47,7 @@ class AutorRegistroFormUnitTest(TestCase):
     ])
     def test_fields_label(self, field, needed):
         form = RegistroForm()
-        current = form[field].fields.label
+        current = form[field].field.label
         self.assertEqual(current, needed)
 
 
@@ -68,12 +65,19 @@ class AutorRegistroFormIntegrationTest(DjangoTestCase):
         return super().setUp(*args, **kwargs)
 
     @parameterized.expand([
-        ('username', 'este campo é obrigatório'),
+        ('username', 'Este campo não deve estar vazio'),
+        ('first_name', 'Escreva seu primeiro nome'),
+        ('last_name', 'Escreva seu sobrenome'),
+        ('password', 'A senha não deve estar vazia'),
+        ('password2', 'Repita a sua senha'),
+        ('email', 'O e-mail não deve estar vazio'),
+
 
     ])
     def test_fields_cannot_be_empty(self, field, msg):
-
         self.form_data[field] = ''
         url = reverse('autores:criação')
-        response = self.client.post(url, data=self.form_data)
+        response = self.client.post(url, data=self.form_data, follow=True)
+
         self.assertIn(msg, response.content.decode('utf-8'))
+        self.assertIn(msg, response.context['form'].errors.get(field))
