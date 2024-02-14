@@ -24,8 +24,8 @@ class AutorRegistroFormUnitTest(TestCase):
 
     @parameterized.expand([
         ('username', (
-            'Obrigatório. 150 caracteres ou menos. '
-            'Letras, números e @/./+/-/_ apenas.')),
+            'Obrigatório. 150 caracteres ou menos.'
+            'Letras, números e @ . + -_.')),
         ('email', 'O e-mail deve ser válido.'),
         ('password', (
             'A senha deve ter pelo menos uma letra maiúscula, '
@@ -65,10 +65,10 @@ class AutorRegistroFormIntegrationTest(DjangoTestCase):
         return super().setUp(*args, **kwargs)
 
     @parameterized.expand([
-        ('username', 'Este campo não deve estar vazio'),
+        ('username', 'This field must not be empty'),
         ('first_name', 'Escreva seu primeiro nome'),
         ('last_name', 'Escreva seu sobrenome'),
-        ('password', 'A senha não deve estar vazia'),
+        ('password', 'This password is too short. It must contain at least 8 characters.'),
         ('password2', 'Repita a sua senha'),
         ('email', 'O e-mail não deve estar vazio'),
 
@@ -81,3 +81,21 @@ class AutorRegistroFormIntegrationTest(DjangoTestCase):
 
         self.assertIn(msg, response.content.decode('utf-8'))
         self.assertIn(msg, response.context['form'].errors.get(field))
+
+    def test_username_field_min_length_should_be_4(self):
+        self.form_data['username'] = 'joa'
+        url = reverse('autores:criação')
+        response = self.client.post(url, data=self.form_data, follow=True)
+
+        msg = 'Username must have at least 4 characters'
+        self.assertIn(msg, response.content.decode('utf-8'))
+        self.assertIn(msg, response.context['form'].errors.get('username'))
+
+    def test_username_field_max_length_should_be_150(self):
+        self.form_data['username'] = 'a' * 151
+        url = reverse('autores:criação')
+        response = self.client.post(url, data=self.form_data, follow=True)
+
+        msg = 'Username must have less than 150 characters'
+        self.assertIn(msg, response.content.decode('utf-8'))
+        self.assertIn(msg, response.context['form'].errors.get('username'))

@@ -39,6 +39,19 @@ class RegistroForm(forms.ModelForm):
         add_placeholder(self.fields['password'], 'Sua senha')
         add_placeholder(self.fields['password2'], 'Repita a sua senha')
 
+    username = forms.CharField(
+        label='Nome de usuário',
+        help_text=(
+            'Obrigatório. 150 caracteres ou menos.'
+            'Letras, números e @ . + -_.'),
+        error_messages={
+            'required': 'This field must not be empty',
+            'min_length': 'Username must have at least 4 characters',
+            'max_length': 'Username must have less than 150 characters',
+        },
+        min_length=4, max_length=150,
+    )
+
     first_name = forms.CharField(
         error_messages={'required': 'Escreva seu primeiro nome'},
         label='Nome',
@@ -58,7 +71,7 @@ class RegistroForm(forms.ModelForm):
     password = forms.CharField(
         widget=forms.PasswordInput(),
         error_messages={
-            'required': 'A senha não deve estar vazia'
+            'required': 'This password is too short. It must contain at least 8 characters.'
         },
         help_text=(
             'A senha deve ter pelo menos uma letra maiúscula, '
@@ -86,16 +99,9 @@ class RegistroForm(forms.ModelForm):
         ]
 
         labels: dict[str, str] = {
-            'username': 'Nome de usuário',
             'first_name': 'Nome',
             'last_name': 'Sobrenome',
             'email': 'E-mail',
-        }
-
-        error_messages: dict[str, dict[str, str]] = {
-            'username': {
-                'required': 'Este campo não deve estar vazio',
-            }
         }
 
     def clean(self) -> None:
