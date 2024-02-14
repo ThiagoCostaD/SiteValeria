@@ -1,4 +1,3 @@
-import email
 import re
 from typing import Any
 
@@ -112,7 +111,7 @@ class RegistroForm(forms.ModelForm):
 
         if password != password2:
             password_confirmation_error = ValidationError(
-                'Senha e senha2 devem ser iguais',
+                'Password and Password2 must be equal',
                 code='invalid'
             )
             raise ValidationError({
