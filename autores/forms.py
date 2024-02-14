@@ -21,9 +21,7 @@ def strong_password(password) -> None:
 
     if not regex.match(password):
         raise ValidationError((
-            'A senha deve ter pelo menos uma letra maiúscula, '
-            'uma letra minúscula e um número. O comprimento deve ser '
-            'pelo menos 8 caracteres.'
+            'Password must have at least one uppercase letter, one lowercase letter and one number. The length should be at least 8 characters.'
         ),
             code='Invalid'
         )
@@ -71,7 +69,9 @@ class RegistroForm(forms.ModelForm):
     password = forms.CharField(
         widget=forms.PasswordInput(),
         error_messages={
-            'required': 'This password is too short. It must contain at least 8 characters.'
+            'required': 'Password must have at least one uppercase letter, '
+            'one lowercase letter and one number. The length should be '
+            'at least 8 characters.'
         },
         help_text=(
             'A senha deve ter pelo menos uma letra maiúscula, '
