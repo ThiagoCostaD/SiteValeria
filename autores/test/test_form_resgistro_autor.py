@@ -125,7 +125,7 @@ class AutorRegistroFormIntegrationTest(DjangoTestCase):
         url = reverse('autores:criação')
         response = self.client.post(url, data=self.form_data, follow=True)
 
-        msg = 'Password and password2 must be equal'
+        msg = 'Password and Password2 must be equal'
 
         self.assertIn(msg, response.context['form'].errors.get('password'))
         self.assertIn(msg, response.content.decode('utf-8'))
