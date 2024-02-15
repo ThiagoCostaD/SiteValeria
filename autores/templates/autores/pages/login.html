@@ -6,10 +6,17 @@
     <div class="main-content center container">
         <h2>Login </h2>
         {% if request.user.is_authenticated %}
-        <p> You are Logged in with
-            <strong>{{ request.user.username  }}</strong>.
-
-        </p>
+        <div> You are Logged in with
+            {{ request.user.username  }}.
+            Please,
+            <form class='inline-form' action="{% url 'autores:loggout' %}" method='POST'>
+                {% csrf_token %}
+                <input type="hiden"
+                name="username" value="{{ request.user.username }}">
+                <button class='plaintext-button'type="submit">Click here</button>
+            </form>to Logout.
+        </div>
+        {% endif %}
     </div>
 
     {% include 'global/partials/messages.html' %}

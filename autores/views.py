@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -40,6 +41,7 @@ def criação_resgistro(request):
             request, 'Seu usuário foi criado, por favor faça o login.')
 
         del (request.session['register_form_data'])
+        return redirect(reverse('autores:login'))
 
     return redirect('autores:registro')
 
@@ -82,3 +84,16 @@ def login_create(request):
         messages.error(request, 'Invalid username or password')
 
     return redirect(login_url)
+
+
+@login_required(login_url='autores:login', redirect_field_name='next')
+def logout_view(request):
+
+    if not request.POST:
+        return redirect(reverse('autores:login'))
+
+    if request.POST.get('username') != request.user.username:
+        return redirect(reverse('autores:login'))
+
+    logout(request)
+    return redirect(reverse('autores:login'))

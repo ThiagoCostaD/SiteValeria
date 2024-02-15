@@ -228,7 +228,7 @@ h6 {
         margin: 0 auto;
         max-width: 84rem;
     }
-    
+
     .testemunho-itens-lista:hover {
         transform: scale(1);
         box-shadow: -5px 5px 10px rgba(0, 0, 0, .2);
@@ -248,13 +248,13 @@ h6 {
     background: var(--color-gray-3);
     padding: 0.5rem 1rem;
   }
-  
+
   .pagination .page-link {
     text-decoration: none;
     background: var(--color-primary-dark);
     color: var(--color-white);
   }
-  
+
   .pagination .page-current {
     background: var(--color-black);
   }
@@ -283,7 +283,7 @@ h6 {
     margin: 0 auto;
     margin-bottom: var(--spacing-gutter-medium);
   }
-  
+
   .form-content label,
   .form-content .help-text,
   .errorlist {
@@ -292,30 +292,44 @@ h6 {
     font-size: 1.4rem;
     list-style-type: none;
   }
-  
+
   .errorlist {
     color: var(--color-error-dark);
   }
-  
+
   .form-content input {
     width: 100%;
     padding: 1rem;
     border-radius: 0.4rem;
     border: 1px solid var(--color-primary-dark);
   }
-  
+
   .form-content-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
     gap: calc(var(--spacing-gutter-medium) / 2) var(--spacing-gutter-medium);
   }
-  
+
   .form-content button {
     padding: 1rem 2rem;
     border: none;
     background: var(--color-primary-dark);
     color: var(--color-white);
   }
+
+.inline-form{
+    display: inline;
+}
+
+.plaintext-button{
+    font-size: 1.6rem;
+    display: inline;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: var(--color-primary);
+}
+
 /* Messages */
 .messages-container {
     display: flex;
@@ -365,7 +379,7 @@ h6 {
     background: var(--color-debug-light);
     color: var(--color-debug-dark);
 }
-  
+
 .center{
     text-align: center;
 }
@@ -383,3 +397,4 @@ h6 {
       grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
     }
   }
+
