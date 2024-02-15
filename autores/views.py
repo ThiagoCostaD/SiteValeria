@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
 from django.http import Http404
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -55,4 +56,29 @@ def login_views(request):
 
 
 def login_create(request):
-    return render(request, 'autores/pages/login_create.html')
+
+    if not request.POST:
+        raise Http404()
+
+    form = LoginForm(request.POST)
+
+    login_url = reverse('autores:login')
+
+    if form.is_valid():
+        authenticated_user = authenticate(
+            request,
+            username=form.cleaned_data.get['username', ''],
+            password=form.cleaned_data.get['password', ''],
+        )
+
+        if authenticated_user is not None:
+            messages.success(request, 'You are logged in')
+            login(request, authenticated_user)
+
+        else:
+            messages.error(request, 'Invalid credentials')
+
+    else:
+        messages.error(request, 'Invalid username or password')
+
+    return redirect(login_url)

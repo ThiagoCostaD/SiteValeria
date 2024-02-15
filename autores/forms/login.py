@@ -1,5 +1,6 @@
 from django import forms
-from utils.django_forms import add_placeholder, strong_password
+
+from utils.django_forms import add_placeholder
 
 
 class LoginForm(forms.Form):
