@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.http import Http404
 from django.shortcuts import redirect, render
+from django.urls import reverse
 
 from .forms import RegistroForm
 
@@ -15,6 +16,7 @@ def resgistro_views(request):
     return render(
         request, 'autores/pages/resgistro_views.html', {
             'form': form,
+            "form_action": reverse('autores:criação'),
         }
     )
 
