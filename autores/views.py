@@ -41,3 +41,11 @@ def criação_resgistro(request):
         del (request.session['register_form_data'])
 
     return redirect('autores:registro')
+
+
+def login_views(request):
+    return render(request, 'autores/pages/login.html')
+
+
+def login_create(request):
+    return render(request, 'autores/pages/login_create.html')
