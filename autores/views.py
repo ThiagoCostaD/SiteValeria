@@ -3,7 +3,7 @@ from django.http import Http404
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
-from .forms import RegistroForm
+from .forms import LoginForm, RegistroForm
 
 
 def resgistro_views(request):
@@ -44,7 +44,14 @@ def criação_resgistro(request):
 
 
 def login_views(request):
-    return render(request, 'autores/pages/login.html')
+    form = LoginForm()
+    return render(
+        request,
+        'autores/pages/login.html',
+        {'form': form,
+         'form_action': reverse('autores:login')
+         }
+    )
 
 
 def login_create(request):
