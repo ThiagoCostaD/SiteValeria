@@ -7,6 +7,25 @@
         <h2>Dashboard ({{ user }}) </h2>
         {% include 'autores/partials/login_messages.html' %}
 
+        <div class="authors-dashboard-container">
+            <h3>Seus Testemunhos</h3>
+
+            <ul>
+                {% for testemunho in testemunhos %}
+                    <li>
+                        <a href="#">
+                            {{ testemunho.titulo }}
+                        </a>
+                    </li>
+                {% empty %}
+                    <li>
+                        <p>Você ainda não tem testemunhos.</p>
+                    </li>
+                {% endfor %}
+            </ul>
+
+        </div>
+
     </div>
 
     {% include 'global/partials/messages.html' %}

@@ -386,6 +386,20 @@ h6 {
     margin: 1rem;
 }
 
+.authors-dashboard-container {
+    max-width: 64rem;
+    padding: var(--spacing-gutter-medium);
+    text-align: left;
+    margin: 0 auto;
+    text-decoration: none;
+}
+
+.authors-dashboard-container h3,
+.authors-dashboard-container p,
+.authors-dashboard-container ul{
+    list-style-type: none;
+    margin: 1rem;
+}
 /* Utilities */
 .center{
     text-align: center;

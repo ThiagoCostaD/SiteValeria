@@ -1,9 +1,13 @@
+from cgi import test
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import redirect, render
 from django.urls import reverse
+
+from testemunhos.models import Testemunho
 
 from .forms import LoginForm, RegistroForm
 
@@ -96,4 +100,14 @@ def logout_view(request):
 
 @login_required(login_url='autores:login', redirect_field_name='next')
 def dashboard(request):
-    return render(request, 'autores/pages/dashboard.html')
+    recipes = Testemunho.objects.filter(
+
+        autor=request.user
+    )
+    return render(
+        request,
+        'autores/pages/dashboard.html',
+        context={
+            'testemunhos': recipes,
+        }
+    )
