@@ -16,14 +16,14 @@
     --color-success-light: #d4edda;
     --color-alert-light: #fff3cd;
     --color-warning-light: #fff3cd;
-    --color-error-light: #f8d7da;
+    --color-error-light: #fb727e;
 
     --color-info-dark: #4d86c4;
     --color-debug-dark: #4d86c4;
     --color-success-dark: #4a9c5d;
     --color-alert-dark: #927f40;
     --color-warning-dark: #927f40;
-    --color-error-dark: #da525d;
+    --color-error-dark: #ff0015;
 
     --color-gray-0: #f9f9f9;
     --color-gray-1: #e0e0e0;
@@ -228,7 +228,7 @@ h6 {
         margin: 0 auto;
         max-width: 84rem;
     }
-    
+
     .testemunho-itens-lista:hover {
         transform: scale(1);
         box-shadow: -5px 5px 10px rgba(0, 0, 0, .2);
@@ -248,13 +248,13 @@ h6 {
     background: var(--color-gray-3);
     padding: 0.5rem 1rem;
   }
-  
+
   .pagination .page-link {
     text-decoration: none;
     background: var(--color-primary-dark);
     color: var(--color-white);
   }
-  
+
   .pagination .page-current {
     background: var(--color-black);
   }
@@ -275,6 +275,59 @@ h6 {
 
 .main-footer a:hover {
     filter: brightness(.8);
+}
+
+/* Forms */
+.form-content {
+    max-width: 64rem;
+    margin: 0 auto;
+    margin-bottom: var(--spacing-gutter-medium);
+  }
+
+  .form-content label,
+  .form-content .help-text,
+  .errorlist {
+    display: block;
+    margin: 0.5rem 0;
+    font-size: 1.4rem;
+    list-style-type: none;
+  }
+
+  .errorlist {
+    color: var(--color-error-dark);
+  }
+
+  .form-content input {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 0.4rem;
+    border: 1px solid var(--color-primary-dark);
+  }
+
+  .form-content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+    gap: calc(var(--spacing-gutter-medium) / 2) var(--spacing-gutter-medium);
+  }
+
+  .form-content button {
+    padding: 1rem 2rem;
+    border: none;
+    background: var(--color-primary-dark);
+    color: var(--color-white);
+  }
+
+.inline-form{
+    display: inline;
+}
+
+.plaintext-button{
+    font-size: 1.6rem;
+    display: inline;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: var(--color-primary);
 }
 
 /* Messages */
@@ -326,7 +379,7 @@ h6 {
     background: var(--color-debug-light);
     color: var(--color-debug-dark);
 }
-  
+
 .center{
     text-align: center;
 }
@@ -339,7 +392,9 @@ h6 {
     margin: var(--spacing-gutter-medium);
 }
 @media (max-width: 600px) {
-    .main-content-list {
+    .main-content-list,
+    .form-content-grid {
       grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
     }
   }
+

@@ -8,7 +8,7 @@ def make_pagination_range(
     qtd_pag,
     current_pag,
 ):
-    middle_range = math.ceil(qtd_pag/2)
+    middle_range = math.ceil(qtd_pag / 2)
     star_range = current_pag - middle_range
     stop_range = current_pag + middle_range
     total_pages = len(page_range)

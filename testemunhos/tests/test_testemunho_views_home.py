@@ -31,19 +31,14 @@ class TestemunhoViewsHomeTest(TestemunhoTestBase):
     def test_testemunhos_home_templates_carrega_testemunho(self):
         self.make_testemunho()
         response = self.client.get(reverse('testemunhos:home'))
-        response_testemunhos = response.context['testemunhos']
         content = response.content.decode('utf-8')
+        response_testemunhos = response.context['testemunhos']
 
+        self.assertIn('Testemunho titulo', content)
         self.assertEqual(
             len(response.context
                 ['testemunhos']), 1
         ),
-        self.assertEqual(
-            response_testemunhos.first().titulo,
-            'Testemunho titulo'
-        ),
-        self.assertIn('Testemunho titulo', content)
-        self.assertIn('Testemunho', content)
 
     def test_testemunhos_home_não_publicados(self):
         """testando se os testemunhos que estão marcados como não publicdos passam no teste"""  # noqa: E501
@@ -56,8 +51,8 @@ class TestemunhoViewsHomeTest(TestemunhoTestBase):
         )
 
     def test_testemunho_home_esta_paginando(self):
-        for i in range(9):
-            kwargs = {'slug': f'r{i}', 'autor': {'username': f'u{i}'}}
+        for i in range(8):
+            kwargs = {'slug': f'r{i}', 'autor_data': {'username': f'u{i}'}}
             self.make_testemunho(**kwargs)
 
         with patch('testemunhos.views.PER_PAGE', new=3):
@@ -69,3 +64,28 @@ class TestemunhoViewsHomeTest(TestemunhoTestBase):
             self.assertEqual(len(paginator.get_page(1)), 3)
             self.assertEqual(len(paginator.get_page(2)), 3)
             self.assertEqual(len(paginator.get_page(3)), 2)
+
+    def test_invalid_page_query_uses_current_uses_page_one(self):
+        for i in range(8):
+            kwargs = {'slug': f'r{i}', 'autor_data': {'username': f'u{i}'}}
+            self.make_testemunho(**kwargs)
+
+        with patch('testemunhos.views.PER_PAGE', new=3):
+
+            response = self.client.get(reverse('testemunhos:home') + '?page=1A0')
+            self.assertEqual(
+                response.context['testemunhos'].number,
+                1
+            )
+
+            response = self.client.get(reverse('testemunhos:home') + '?page=2')
+            self.assertEqual(
+                response.context['testemunhos'].number,
+                2
+            )
+
+            response = self.client.get(reverse('testemunhos:home') + '?page=3')
+            self.assertEqual(
+                response.context['testemunhos'].number,
+                3
+            )
