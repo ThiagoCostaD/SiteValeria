@@ -9,12 +9,11 @@
         <div> You are Logged in with
             {{ request.user.username  }}.
             Please,
-            <form class='inline-form' action="{% url 'autores:loggout' %}" method='POST'>
-                {% csrf_token %}
-                <input type="hiden"
-                name="username" value="{{ request.user.username }}">
-                <button class='plaintext-button'type="submit">Click here</button>
-            </form>to Logout.
+            <form class="inline-form" action="{% url 'autores:logout' %}" method='POST'>
+          {% csrf_token %}
+          <input type="hidden" name="username" value="{{ request.user.username }}">
+          <button class="plaintext-button" type="submit">click here</button>
+        </form> to logout.
         </div>
         {% endif %}
     </div>

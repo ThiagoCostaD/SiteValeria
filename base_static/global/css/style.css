@@ -321,15 +321,15 @@ h6 {
     display: inline;
 }
 
+
 .plaintext-button{
-    font-size: 1.6rem;
     display: inline;
     border: none;
     background: none;
     cursor: pointer;
-    color: var(--color-primary);
+    color: var(--color-primary-dark);
+    font-size: 1.7rem;
 }
-
 /* Messages */
 .messages-container {
     display: flex;
