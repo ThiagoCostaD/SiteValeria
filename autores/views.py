@@ -52,7 +52,7 @@ def login_views(request):
         request,
         'autores/pages/login.html',
         {'form': form,
-         'form_action': reverse('autores:login')
+         'form_action': reverse('autores:login_create'),
          }
     )
 
@@ -63,23 +63,19 @@ def login_create(request):
         raise Http404()
 
     form = LoginForm(request.POST)
-
     login_url = reverse('autores:login')
 
     if form.is_valid():
         authenticated_user = authenticate(
-            request,
-            username=form.cleaned_data.get['username', ''],
-            password=form.cleaned_data.get['password', ''],
+            username=form.cleaned_data.get('username', ''),
+            password=form.cleaned_data.get('password', ''),
         )
 
         if authenticated_user is not None:
-            messages.success(request, 'You are logged in')
+            messages.success(request, 'Your are logged in.')
             login(request, authenticated_user)
-
         else:
             messages.error(request, 'Invalid credentials')
-
     else:
         messages.error(request, 'Invalid username or password')
 
