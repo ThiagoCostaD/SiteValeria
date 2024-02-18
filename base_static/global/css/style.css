@@ -380,6 +380,13 @@ h6 {
     color: var(--color-debug-dark);
 }
 
+/* Authors */
+
+.login-message{
+    margin: 1rem;
+}
+
+/* Utilities */
 .center{
     text-align: center;
 }
