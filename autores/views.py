@@ -1,13 +1,14 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
+from django.db.models.manager import BaseManager
+from django.http import Http404, HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
 from testemunhos.models import Testemunho
 
-from .forms import LoginForm, RegistroForm
+from .forms import AutorTestemunhoForm, LoginForm, RegistroForm
 
 
 def resgistro_views(request):
@@ -112,19 +113,24 @@ def dashboard(request):
 
 
 @login_required(login_url='autores:login', redirect_field_name='next')
-def dashboard_testemunho_edit(request, id):
-    testemunho = Testemunho.objects.filter(
+def dashboard_testemunho_edit(request, id) -> HttpResponse:
+    testemunho: BaseManager[Testemunho] = Testemunho.objects.filter(
         pk=id,
         autor=request.user
-    )
+    ).first()
 
     if not testemunho:
         raise Http404()
+
+    form = AutorTestemunhoForm(
+        request.POST or None,
+        instance=testemunho
+    )
 
     return render(
         request,
         'autores/pages/dashboard_testemunho.html',
         context={
-            'testemunhos': testemunho,
+            'form': form,
         }
     )
