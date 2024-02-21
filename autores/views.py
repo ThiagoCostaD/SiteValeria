@@ -1,5 +1,3 @@
-from cgi import test
-
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -100,7 +98,7 @@ def logout_view(request):
 
 @login_required(login_url='autores:login', redirect_field_name='next')
 def dashboard(request):
-    recipes = Testemunho.objects.filter(
+    testemunhos = Testemunho.objects.filter(
 
         autor=request.user
     )
@@ -108,6 +106,25 @@ def dashboard(request):
         request,
         'autores/pages/dashboard.html',
         context={
-            'testemunhos': recipes,
+            'testemunhos': testemunhos,
+        }
+    )
+
+
+@login_required(login_url='autores:login', redirect_field_name='next')
+def dashboard_testemunho_edit(request, id):
+    testemunho = Testemunho.objects.filter(
+        pk=id,
+        autor=request.user
+    )
+
+    if not testemunho:
+        raise Http404()
+
+    return render(
+        request,
+        'autores/pages/dashboard_testemunho.html',
+        context={
+            'testemunhos': testemunho,
         }
     )

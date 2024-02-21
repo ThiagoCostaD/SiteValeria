@@ -1,0 +1,43 @@
+{% extends 'global/base.html' %}
+
+{% block titulo %} Dashboard Testemunho {{ titulo }} |{% endblock titulo %}
+
+{% block content %}
+    <div class="main-content center container">
+        <h2>Dashboard Testemunho ({{ user }}) </h2>
+        {% include 'global/partials/messages.html' %}
+        {% include 'autores/partials/login_messages.html' %}
+        <div class="authors-dashboard-container">
+
+            {% include 'global/partials/forms.html' %}
+
+            <!--
+                <div class="authors-dashboard-container">
+                    Essa parte sera implementada futuramente
+
+                    <div class="authors-dashboard">
+                        <div class="authors-dashboard-item">
+                            <h3>Testemunhos</h3>
+                            <p>{{ testemunhos }}</p>
+                        </div>
+                        <div class="authors-dashboard-item">
+                            <h3>Testemunhos Aprovados</h3>
+                            <p>{{ testemunhos_aprovados }}</p>
+                        </div>
+                        <div class="authors-dashboard-item">
+                            <h3>Testemunhos Pendentes</h3>
+                            <p>{{ testemunhos_pendentes }}</p>
+                        </div>
+                        <div class="authors-dashboard-item">
+                            <h3>Testemunhos Rejeitados</h3>
+                            <p>{{ testemunhos_rejeitados }}</p>
+                        </div>
+                    </div>
+                -->
+
+        </div>
+
+    </div>
+
+
+{% endblock content %}
