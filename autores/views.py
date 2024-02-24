@@ -124,8 +124,28 @@ def dashboard_testemunho_edit(request, id) -> HttpResponse:
 
     form = AutorTestemunhoForm(
         request.POST or None,
+        files=request.FILES or None,
         instance=testemunho
     )
+
+    if form.is_valid():
+        form.save(commit=False)
+
+        testemunho.autor = request.user
+        testemunho.preparation_step_is_html = False
+        testemunho.is_published = False
+
+        testemunho.save()
+
+        messages.success(request, 'Testemunho atualizado com sucesso.')
+        return redirect(
+            reverse(
+                'autores:dashboard_testemunho_edit',
+                args=(
+                    id,
+                )
+            )
+        )
 
     return render(
         request,
