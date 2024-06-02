@@ -5,7 +5,10 @@
 {% block content %}
 <div class="main-content center container">
     <h2>Dashboard ({{ user }}) </h2>
+
+
     {% include 'autores/partials/login_messages.html' %}
+    {% include 'global/partials/messages.html' %}
 
     <div class="authors-dashboard-container">
         <h3>Seus Testemunhos</h3>
@@ -15,7 +18,16 @@
             <li>
                 <a href="{% url 'autores:dashboard_testemunho_edit' testemunho.id %}">
                     {{ testemunho.titulo }}
-                </a>
+                </a> - 
+                <form 
+                class="inline-form form-delete"
+                action="{% url "autores:dashboard_testemunho_delete" testemunho.id %}" 
+                method='POST'
+                >
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ testemunho.id }}">
+                    <button class='plaintext-button'type="submit">Excluir</button>
+                </form>
             </li>
             {% empty %}
                 <li>
@@ -28,6 +40,6 @@
 
 </div>
 
-    {% include 'global/partials/messages.html' %}
+    
 
 {% endblock content %}

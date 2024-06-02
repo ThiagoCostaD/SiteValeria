@@ -195,3 +195,26 @@ def dashboard_testemunho_create(request) -> HttpResponse:
             'form': form,
         }
     )
+
+
+@login_required(login_url='autores:login', redirect_field_name='next')
+def dashboard_testemunho_delete(request) -> HttpResponse:
+    # sourcery skip: avoid-builtin-shadow
+    if not request.POST:
+        raise Http404()
+
+    POST = request.POST
+    id = POST.get('id')
+
+    testemunho: BaseManager[Testemunho] = Testemunho.objects.filter(
+        pk=id,
+        autor=request.user
+    ).first()
+
+    if not testemunho:
+        raise Http404()
+
+    testemunho.delete()
+
+    messages.success(request, 'Testemunho deletado com sucesso.')
+    return redirect(reverse('autores:dashboard'))

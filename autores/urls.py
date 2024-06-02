@@ -17,6 +17,11 @@ urlpatterns = [
         name='dashboard_testemunho_new'
     ),
     path(
+        'dashboard/testemunho/delete/',
+        views.dashboard_testemunho_delete,
+        name='dashboard_testemunho_delete'
+    ),
+    path(
         'dashboard/testemunho/<int:id>/edit/',
         views.dashboard_testemunho_edit,
         name='dashboard_testemunho_edit'
