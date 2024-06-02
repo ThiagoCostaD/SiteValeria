@@ -6,6 +6,7 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
+# sourcery skip: dont-import-test-modules
 from testemunhos.models import Testemunho
 
 from .forms import AutorTestemunhoForm, LoginForm, RegistroForm
@@ -37,16 +38,20 @@ def criação_resgistro(request):
     form = RegistroForm(POST)
 
     if form.is_valid():
-        user = form.save(commit=False)
-        user.set_password(user.password)
-        user.save()
-        messages.success(
-            request, 'Seu usuário foi criado, por favor faça o login.')
-
-        del (request.session['register_form_data'])
-        return redirect(reverse('autores:login'))
-
+        return _extracted_from_criação_resgistro_12(form, request)
     return redirect('autores:registro')
+
+
+# TODO Rename this here and in `criação_resgistro`
+def _extracted_from_criação_resgistro_12(form, request):
+    user = form.save(commit=False)
+    user.set_password(user.password)
+    user.save()
+    messages.success(
+        request, 'Seu usuário foi criado, por favor faça o login.')
+
+    del (request.session['register_form_data'])
+    return redirect(reverse('autores:login'))
 
 
 def login_views(request):
@@ -143,6 +148,42 @@ def dashboard_testemunho_edit(request, id) -> HttpResponse:
                 'autores:dashboard_testemunho_edit',
                 args=(
                     id,
+                )
+            )
+        )
+
+    return render(
+        request,
+        'autores/pages/dashboard_testemunho.html',
+        context={
+            'form': form,
+        }
+    )
+
+
+@login_required(login_url='autores:login', redirect_field_name='next')
+def dashboard_testemunho_create(request) -> HttpResponse:
+
+    form = AutorTestemunhoForm(
+        request.POST or None,
+        files=request.FILES or None,
+    )
+
+    if form.is_valid():
+        testemunho = form.save(commit=False)
+
+        testemunho.autor = request.user
+        testemunho.preparation_step_is_html = False
+        testemunho.is_published = False
+
+        testemunho.save()
+
+        messages.success(request, 'Testemunho criado com sucesso.')
+        return redirect(
+            reverse(
+                'autores:dashboard_testemunho_edit',
+                args=(
+                    testemunho.pk,
                 )
             )
         )

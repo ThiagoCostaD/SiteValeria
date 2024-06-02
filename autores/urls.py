@@ -12,8 +12,14 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path(
+        'dashboard/testemunho/new/',
+        views.dashboard_testemunho_new,
+        name='dashboard_testemunho_new'
+    ),
+    path(
         'dashboard/testemunho/<int:id>/edit/',
         views.dashboard_testemunho_edit,
         name='dashboard_testemunho_edit'
     ),
+
 ]
