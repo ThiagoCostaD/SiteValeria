@@ -71,3 +71,18 @@ class DashboardTestemunho(View):
                 )
             )
         return self.render_testemunho(form)
+
+
+@method_decorator(
+    login_required(
+        login_url="autores:login",
+        redirect_field_name="next",
+        name="dispatch",
+    )
+)
+class DashboardTestemunhoDelete(View):
+    def post(self, *args, **kwargs):
+        testemunho = self.get_testemunho(self.request.POST.get("id"))
+        testemunho.delete()
+        messages.success(self.request, "Testemunho deletado com sucesso.")
+        return redirect(reverse("autores:dashboard"))
