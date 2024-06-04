@@ -1,14 +1,22 @@
+from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.utils.decorators import method_decorator
 from django.views import View
 from pyexpat.errors import messages
 
 from autores.forms.testemunho_form import AutorTestemunhoForm
-# sourcery skip: dont-import-test-modules
 from testemunhos.models import Testemunho
 
 
+@method_decorator(
+    login_required(
+        login_url="autores:login",
+        redirect_field_name="next",
+        name="dispatch",
+    )
+)
 class DashboardTestemunho(View):
     def get_testemunho(self, id=None):
         testemunho = None
