@@ -6,10 +6,9 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
+from autores.forms import AutorTestemunhoForm, LoginForm, RegistroForm
 # sourcery skip: dont-import-test-modules
 from testemunhos.models import Testemunho
-
-from .forms import AutorTestemunhoForm, LoginForm, RegistroForm
 
 
 def resgistro_views(request):
@@ -113,50 +112,6 @@ def dashboard(request):
         'autores/pages/dashboard.html',
         context={
             'testemunhos': testemunhos,
-        }
-    )
-
-
-@login_required(login_url='autores:login', redirect_field_name='next')
-def dashboard_testemunho_edit(request, id) -> HttpResponse:
-    testemunho: BaseManager[Testemunho] = Testemunho.objects.filter(
-        pk=id,
-        autor=request.user
-    ).first()
-
-    if not testemunho:
-        raise Http404()
-
-    form = AutorTestemunhoForm(
-        request.POST or None,
-        files=request.FILES or None,
-        instance=testemunho
-    )
-
-    if form.is_valid():
-        form.save(commit=False)
-
-        testemunho.autor = request.user
-        testemunho.preparation_step_is_html = False
-        testemunho.is_published = False
-
-        testemunho.save()
-
-        messages.success(request, 'Testemunho atualizado com sucesso.')
-        return redirect(
-            reverse(
-                'autores:dashboard_testemunho_edit',
-                args=(
-                    id,
-                )
-            )
-        )
-
-    return render(
-        request,
-        'autores/pages/dashboard_testemunho.html',
-        context={
-            'form': form,
         }
     )
 
