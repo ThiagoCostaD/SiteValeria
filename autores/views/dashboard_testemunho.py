@@ -10,18 +10,15 @@ from testemunhos.models import Testemunho
 
 
 class DashboardTestemunho(View):
-    def get_testemunho(self, id):
+    def get_testemunho(self, id=None):
         testemunho = None
-
-        if id:
+        if id is not None:
             testemunho = Testemunho.objects.filter(
                 pk=id,
                 autor=self.request.user,
             ).first()
-
         if not testemunho:
             raise Http404()
-
         return testemunho
 
     def render_testemunho(self, form):
@@ -33,25 +30,20 @@ class DashboardTestemunho(View):
             },
         )
 
-    def get(self, *args, **kwargs):
-
-        testemunho = self.get_testemunho(kwargs.get("id"))
-
-        form = AutorTestemunhoForm(isinstance=testemunho)
-
-        return self.render_testemunho(form)
-
-    def post(self, request, id):  # sourcery skip: extract-method
-        self.request = request
+    def get(self, id=None):
 
         testemunho = self.get_testemunho(id)
+        form = AutorTestemunhoForm(isinstance=testemunho)
+        return self.render_testemunho(form)
 
+    def post(self, request, id=None):  # sourcery skip: extract-method
+        self.request = request
+        testemunho = self.get_testemunho(id)
         form = AutorTestemunhoForm(
             request.POST or None,
             files=request.FILES or None,
             instance=testemunho
         )
-
         if form.is_valid():
             form.save(commit=False)
 
@@ -65,8 +57,9 @@ class DashboardTestemunho(View):
             return redirect(
                 reverse(
                     "autores:dashboard_testemunho_edit",
-                    args=(id,)
+                    args=(
+                        testemunho.id,
+                    )
                 )
             )
-
         return self.render_testemunho(form)
