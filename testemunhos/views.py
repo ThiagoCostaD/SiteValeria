@@ -37,6 +37,10 @@ class TestemunhoListViewBase(ListView):
         return ctx
 
 
+class TestemunhoListViewHome(TestemunhoListViewBase):
+    template_name = 'testemunhos/pages/home.html'
+
+
 def home(request):
     testemunhos = Testemunho.objects.filter(
         publicado=True
