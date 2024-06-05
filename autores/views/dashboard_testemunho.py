@@ -11,11 +11,8 @@ from testemunhos.models import Testemunho
 
 
 @method_decorator(
-    login_required(
-        login_url="autores:login",
-        redirect_field_name="next",
-        name="dispatch",
-    )
+    login_required(login_url='authors:login', redirect_field_name='next'),
+    name='dispatch'
 )
 class DashboardTestemunho(View):
     def get_testemunho(self, id=None):
@@ -74,11 +71,8 @@ class DashboardTestemunho(View):
 
 
 @method_decorator(
-    login_required(
-        login_url="autores:login",
-        redirect_field_name="next",
-        name="dispatch",
-    )
+    login_required(login_url='authors:login', redirect_field_name='next'),
+    name='dispatch'
 )
 class DashboardTestemunhoDelete(View):
     def post(self, *args, **kwargs):
