@@ -4,7 +4,7 @@ from venv import logger
 # from django.contrib import messages
 from django.db.models import Q
 from django.http import Http404
-from django.shortcuts import get_list_or_404, get_object_or_404, render
+from django.shortcuts import get_object_or_404, render
 from django.utils.html import escape
 from django.views.generic import ListView
 
@@ -41,38 +41,22 @@ class TestemunhoListViewHome(TestemunhoListViewBase):
     template_name = 'testemunhos/pages/home.html'
 
 
-def home(request):
-    testemunhos = Testemunho.objects.filter(
-        publicado=True
-    ).order_by('-data_criacao')
+class TestemunhoListViewCategoria(TestemunhoListViewBase):
+    template_name = 'testemunhos/pages/categoria.html'
 
-    page_obj, pagination_range = make_pagination(
-        request, testemunhos, PER_PAGE)
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        qs = qs.filter(
+            categoria__id=self.kwargs.get('categoria_id')
+        )
+        return qs
 
-    return render(request, 'testemunhos/pages/home.html', context={
-        'testemunhos': page_obj,
-        'pagination_range': pagination_range,
-    })
-
-
-def categoria(request, categoria_id):
-
-    testemunhos = get_list_or_404(
-        Testemunho.objects.filter(
-            categoria__id=categoria_id,
-            publicado=True
-        ).order_by('-data_criacao')
-    )
-
-    page_obj, pagination_range = make_pagination(
-        request, testemunhos, PER_PAGE)
-
-    return render(request, 'testemunhos/pages/categoria.html',
-                  context={
-                      'testemunhos': page_obj,
-                      'pagination_range': pagination_range,
-                      'titulo': f'{testemunhos[0].categoria.nome} - Categoria |'  # noqa: E501
-                  })
+    def get_context_data(self, *args, **kwargs):
+        ctx = super().get_context_data(*args, **kwargs)
+        ctx.update({
+            'titulo': f'{self.get_queryset().first().categoria.nome} - Categoria |'  # noqa: E501
+        })
+        return ctx
 
 
 def testemunho(request, id):
@@ -90,33 +74,17 @@ def testemunho(request, id):
                   })
 
 
-def busca(request):
-    termo_busca = escape(
-        request.GET.get(
-            'busca', ''
-        ).strip()
-    )
+class TestemunhoListViewBusca(TestemunhoListViewBase):
+    template_name = 'testemunhos/pages/busca.html'
 
-    if not termo_busca:
-        raise Http404()
+    def get_queryset(self):
 
-    testemunhos = Testemunho.objects.filter(
-        Q(
-            Q(titulo__icontains=termo_busca) |
-            Q(descricao__icontains=termo_busca),
-        ),
-        publicado=True,
-    ).order_by('-data_criacao')
-
-    page_obj, pagination_range = make_pagination(
-        request, testemunhos, PER_PAGE)
-
-    return render(request, 'testemunhos/pages/busca.html',
-                  {
-                      'titulo_pagina': f'Pesquisando por "{termo_busca}"  ',
-                      'termo_busca': termo_busca,
-                      'testemunhos': page_obj,
-                      'pagination_range': pagination_range,
-                      'additional_url_query': f'&busca={termo_busca}',
-                  }
-                  )
+        if termo_busca := escape(self.request.GET.get('busca', '').strip()):
+            return super().get_queryset().filter(
+                Q(
+                    Q(titulo__icontains=termo_busca) |
+                    Q(descricao__icontains=termo_busca),
+                ),
+            )
+        else:
+            raise Http404()

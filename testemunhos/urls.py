@@ -12,12 +12,12 @@ urlpatterns = [
     ),
     path(
         "testemunhos/busca/",
-        views.busca,
+        views.TestemunhoListViewBusca.as_view(),
         name="busca"
     ),
     path(
         "testemunhos/categoria/<int:categoria_id>/",
-        views.categoria,
+        views.TestemunhoListViewCategoria.as_view(),
         name="categoria"
     ),
     path(
