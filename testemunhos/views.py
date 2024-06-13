@@ -1,12 +1,10 @@
 import os
-from venv import logger
 
 # from django.contrib import messages
 from django.db.models import Q
 from django.http import Http404
-from django.shortcuts import get_object_or_404, render
 from django.utils.html import escape
-from django.views.generic import ListView
+from django.views.generic import DetailView, ListView
 
 from utils.pagination import make_pagination
 
@@ -59,21 +57,6 @@ class TestemunhoListViewCategoria(TestemunhoListViewBase):
         return ctx
 
 
-def testemunho(request, id):
-
-    try:
-        testemunho = get_object_or_404(Testemunho, pk=id, publicado=True)
-    except Http404:
-        logger.error('Testemunho not found with id %s', id)
-        raise
-
-    return render(request, 'testemunhos/pages/testemunho-view.html',
-                  context={
-                      'testemunho': testemunho,
-                      'pagina_detalhada': True,
-                  })
-
-
 class TestemunhoListViewBusca(TestemunhoListViewBase):
     template_name = 'testemunhos/pages/busca.html'
 
@@ -88,3 +71,16 @@ class TestemunhoListViewBusca(TestemunhoListViewBase):
             )
         else:
             raise Http404()
+
+
+class TestemunhoDetail(DetailView):
+    model = Testemunho
+    context_object_name = 'testemunho'
+    template_name = 'testemunhos/pages/testemunho-view.html'
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super().get_context_data(*args, **kwargs)
+        ctx.update({
+            'pagina_detalhada': True,
+        })
+        return ctx

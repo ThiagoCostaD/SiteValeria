@@ -21,8 +21,8 @@ urlpatterns = [
         name="categoria"
     ),
     path(
-        "testemunhos/<int:id>/",
-        views.testemunho,
+        "testemunhos/<int:pk>/",
+        views.TestemunhoDetail.as_view(),
         name="testemunho"
     ),
 ]
