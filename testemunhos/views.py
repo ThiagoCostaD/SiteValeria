@@ -2,6 +2,7 @@
 import os
 
 from django.db.models import Q
+from django.forms.models import model_to_dict
 from django.http import Http404, JsonResponse
 from django.http.response import HttpResponse as HttpResponse
 from django.utils.html import escape
@@ -98,3 +99,22 @@ class TestemunhoDetail(DetailView):
             'pagina_detalhada': True,
         })
         return ctx
+
+
+class TestemunhoDetailApi(TestemunhoDetail):
+    def render_to_response(self, context, **response_kwargs):
+        testemunho = self.get_context_data()['testemunho']
+        testemunho_dict = model_to_dict(testemunho)
+
+        if testemunho_dict.get('foto'):
+            testemunho_dict['foto'] = self.request.build_absolute_uri(
+            ) + testemunho_dict['foto'].url[1:]
+        else:
+            testemunho_dict['foto'] = ''
+
+        del testemunho_dict['publicado']
+
+        return JsonResponse(
+            testemunho_dict,
+            safe=False
+        )

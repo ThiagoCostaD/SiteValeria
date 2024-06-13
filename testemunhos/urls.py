@@ -25,4 +25,14 @@ urlpatterns = [
         views.TestemunhoDetail.as_view(),
         name="testemunho"
     ),
+    path(
+        "testemunhos/api/v1/",
+        views.TestemunhoListViewHomeApi.as_view(),
+        name="testemunho_api_v1"
+    ),
+    path(
+        "testemunhos/api/v1/<int:pk>/",
+        views.TestemunhoDetailApi.as_view(),
+        name="testemunho_api_v1_detail"
+    ),
 ]
