@@ -1,8 +1,9 @@
+# flake8: noqa
 import os
 
-# from django.contrib import messages
 from django.db.models import Q
-from django.http import Http404
+from django.http import Http404, JsonResponse
+from django.http.response import HttpResponse as HttpResponse
 from django.utils.html import escape
 from django.views.generic import DetailView, ListView
 
@@ -37,6 +38,19 @@ class TestemunhoListViewBase(ListView):
 
 class TestemunhoListViewHome(TestemunhoListViewBase):
     template_name = 'testemunhos/pages/home.html'
+
+
+class TestemunhoListViewHomeApi(TestemunhoListViewBase):
+    template_name = 'testemunhos/pages/home.html'
+
+    def render_to_response(self, context, **response_kwargs):
+        testemunhos = self.get_context_data()['testemunhos']
+        testemunhos_dict = testemunhos.object_list.values()
+
+        return JsonResponse(
+            list(testemunhos_dict),
+            safe=False
+        )
 
 
 class TestemunhoListViewCategoria(TestemunhoListViewBase):
