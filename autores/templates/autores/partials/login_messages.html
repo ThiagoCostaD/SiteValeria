@@ -1,0 +1,13 @@
+{% if user.is_authenticated %}
+<div class="login-message"> 
+    You are Logged in with
+    {{ request.user.username  }}.
+    <a href="{% url 'autores:dashboard' %}">See your testimonials</a>,
+    <a href="{% url "autores:dashboard_testemunho_create" %}">Create a new testimonials</a> or
+    <form class="inline-form" action="{% url 'autores:logout' %}" method='POST'>
+        {% csrf_token %}
+        <input type="hidden" name="username" value="{{ request.user.username }}">
+        <button class="plaintext-button" type="submit">click here</button>
+    </form> to logout.
+</div>
+{% endif %}

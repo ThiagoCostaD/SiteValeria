@@ -1,11 +1,15 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
+from django.db.models.manager import BaseManager
+from django.http import Http404, HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
-from .forms import LoginForm, RegistroForm
+# sourcery skip: dont-import-test-modules
+from testemunhos.models import Testemunho
+
+from .forms import AutorTestemunhoForm, LoginForm, RegistroForm
 
 
 def resgistro_views(request):
@@ -34,16 +38,20 @@ def criação_resgistro(request):
     form = RegistroForm(POST)
 
     if form.is_valid():
-        user = form.save(commit=False)
-        user.set_password(user.password)
-        user.save()
-        messages.success(
-            request, 'Seu usuário foi criado, por favor faça o login.')
-
-        del (request.session['register_form_data'])
-        return redirect(reverse('autores:login'))
-
+        return _extracted_from_criação_resgistro_12(form, request)
     return redirect('autores:registro')
+
+
+# TODO Rename this here and in `criação_resgistro`
+def _extracted_from_criação_resgistro_12(form, request):
+    user = form.save(commit=False)
+    user.set_password(user.password)
+    user.save()
+    messages.success(
+        request, 'Seu usuário foi criado, por favor faça o login.')
+
+    del (request.session['register_form_data'])
+    return redirect(reverse('autores:login'))
 
 
 def login_views(request):
@@ -52,7 +60,7 @@ def login_views(request):
         request,
         'autores/pages/login.html',
         {'form': form,
-         'form_action': reverse('autores:login')
+         'form_action': reverse('autores:login_create'),
          }
     )
 
@@ -64,26 +72,21 @@ def login_create(request):
 
     form = LoginForm(request.POST)
 
-    login_url = reverse('autores:login')
-
     if form.is_valid():
         authenticated_user = authenticate(
-            request,
-            username=form.cleaned_data.get['username', ''],
-            password=form.cleaned_data.get['password', ''],
+            username=form.cleaned_data.get('username', ''),
+            password=form.cleaned_data.get('password', ''),
         )
 
         if authenticated_user is not None:
-            messages.success(request, 'You are logged in')
+            messages.success(request, 'Your are logged in.')
             login(request, authenticated_user)
-
         else:
             messages.error(request, 'Invalid credentials')
-
     else:
         messages.error(request, 'Invalid username or password')
 
-    return redirect(login_url)
+    return redirect(reverse('autores:dashboard'))
 
 
 @login_required(login_url='autores:login', redirect_field_name='next')
@@ -97,3 +100,121 @@ def logout_view(request):
 
     logout(request)
     return redirect(reverse('autores:login'))
+
+
+@login_required(login_url='autores:login', redirect_field_name='next')
+def dashboard(request):
+    testemunhos = Testemunho.objects.filter(
+
+        autor=request.user
+    )
+    return render(
+        request,
+        'autores/pages/dashboard.html',
+        context={
+            'testemunhos': testemunhos,
+        }
+    )
+
+
+@login_required(login_url='autores:login', redirect_field_name='next')
+def dashboard_testemunho_edit(request, id) -> HttpResponse:
+    testemunho: BaseManager[Testemunho] = Testemunho.objects.filter(
+        pk=id,
+        autor=request.user
+    ).first()
+
+    if not testemunho:
+        raise Http404()
+
+    form = AutorTestemunhoForm(
+        request.POST or None,
+        files=request.FILES or None,
+        instance=testemunho
+    )
+
+    if form.is_valid():
+        form.save(commit=False)
+
+        testemunho.autor = request.user
+        testemunho.preparation_step_is_html = False
+        testemunho.is_published = False
+
+        testemunho.save()
+
+        messages.success(request, 'Testemunho atualizado com sucesso.')
+        return redirect(
+            reverse(
+                'autores:dashboard_testemunho_edit',
+                args=(
+                    id,
+                )
+            )
+        )
+
+    return render(
+        request,
+        'autores/pages/dashboard_testemunho.html',
+        context={
+            'form': form,
+        }
+    )
+
+
+@login_required(login_url='autores:login', redirect_field_name='next')
+def dashboard_testemunho_create(request) -> HttpResponse:
+
+    form = AutorTestemunhoForm(
+        request.POST or None,
+        files=request.FILES or None,
+    )
+
+    if form.is_valid():
+        testemunho = form.save(commit=False)
+
+        testemunho.autor = request.user
+        testemunho.preparation_step_is_html = False
+        testemunho.is_published = False
+
+        testemunho.save()
+
+        messages.success(request, 'Testemunho criado com sucesso.')
+        return redirect(
+            reverse(
+                'autores:dashboard_testemunho_edit',
+                args=(
+                    testemunho.pk,
+                )
+            )
+        )
+
+    return render(
+        request,
+        'autores/pages/dashboard_testemunho.html',
+        context={
+            'form': form,
+        }
+    )
+
+
+@login_required(login_url='autores:login', redirect_field_name='next')
+def dashboard_testemunho_delete(request) -> HttpResponse:
+    # sourcery skip: avoid-builtin-shadow
+    if not request.POST:
+        raise Http404()
+
+    POST = request.POST
+    id = POST.get('id')
+
+    testemunho: BaseManager[Testemunho] = Testemunho.objects.filter(
+        pk=id,
+        autor=request.user
+    ).first()
+
+    if not testemunho:
+        raise Http404()
+
+    testemunho.delete()
+
+    messages.success(request, 'Testemunho deletado com sucesso.')
+    return redirect(reverse('autores:dashboard'))

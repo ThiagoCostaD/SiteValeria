@@ -321,15 +321,15 @@ h6 {
     display: inline;
 }
 
+
 .plaintext-button{
-    font-size: 1.6rem;
     display: inline;
     border: none;
     background: none;
     cursor: pointer;
-    color: var(--color-primary);
+    color: var(--color-primary-dark);
+    font-size: 1.7rem;
 }
-
 /* Messages */
 .messages-container {
     display: flex;
@@ -380,6 +380,27 @@ h6 {
     color: var(--color-debug-dark);
 }
 
+/* Authors */
+
+.login-message{
+    margin: 1rem;
+}
+
+.authors-dashboard-container {
+    max-width: 64rem;
+    padding: var(--spacing-gutter-medium);
+    text-align: left;
+    margin: 0 auto;
+    text-decoration: none;
+}
+
+.authors-dashboard-container h3,
+.authors-dashboard-container p,
+.authors-dashboard-container ul{
+    list-style-type: none;
+    margin: 1rem;
+}
+/* Utilities */
 .center{
     text-align: center;
 }

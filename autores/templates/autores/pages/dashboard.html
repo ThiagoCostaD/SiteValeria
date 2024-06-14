@@ -1,0 +1,45 @@
+{% extends 'global/base.html' %}
+
+{% block titulo %} Dashboard ({{ user }}) |{% endblock titulo %}
+
+{% block content %}
+<div class="main-content center container">
+    <h2>Dashboard ({{ user }}) </h2>
+
+
+    {% include 'autores/partials/login_messages.html' %}
+    {% include 'global/partials/messages.html' %}
+
+    <div class="authors-dashboard-container">
+        <h3>Seus Testemunhos</h3>
+
+        <ul>
+            {% for testemunho in testemunhos %}
+            <li>
+                <a href="{% url 'autores:dashboard_testemunho_edit' testemunho.id %}">
+                    {{ testemunho.titulo }}
+                </a> - 
+                <form 
+                class="inline-form form-delete"
+                action="{% url "autores:dashboard_testemunho_delete" testemunho.id %}" 
+                method='POST'
+                >
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ testemunho.id }}">
+                    <button class='plaintext-button'type="submit">Excluir</button>
+                </form>
+            </li>
+            {% empty %}
+                <li>
+                    <p>Você ainda não tem testemunhos.</p>
+                </li>
+            {% endfor %}
+        </ul>
+
+    </div>
+
+</div>
+
+    
+
+{% endblock content %}

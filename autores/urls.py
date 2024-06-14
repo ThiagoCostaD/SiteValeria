@@ -10,5 +10,21 @@ urlpatterns = [
     path('login/', views.login_views, name='login'),
     path('login/create/', views.login_create, name='login_create'),
     path('logout/', views.logout_view, name='logout'),
+    path('dashboard/', views.dashboard, name='dashboard'),
+    path(
+        'dashboard/testemunho/new/',
+        views.dashboard_testemunho_new,
+        name='dashboard_testemunho_new'
+    ),
+    path(
+        'dashboard/testemunho/delete/',
+        views.dashboard_testemunho_delete,
+        name='dashboard_testemunho_delete'
+    ),
+    path(
+        'dashboard/testemunho/<int:id>/edit/',
+        views.dashboard_testemunho_edit,
+        name='dashboard_testemunho_edit'
+    ),
 
 ]

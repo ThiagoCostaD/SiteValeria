@@ -84,7 +84,7 @@ class RegistroForm(forms.ModelForm):
             'email': 'E-mail',
         }
 
-    def clean_email(self):
+    def clean_email(self):  # sourcery skip: use-named-expression
         email = self.cleaned_data.get('email', '')
         exists = User.objects.filter(email=email).exists()
 

@@ -1,0 +1,55 @@
+{% extends 'global/base.html' %}
+
+{% block titulo %} Dashboard Testemunho {{ titulo }} |{% endblock titulo %}
+
+{% block content %}
+    <div class="main-content center container">
+        <h2>Dashboard Testemunho ({{ user }}) </h2>
+        {% include 'global/partials/messages.html' %}
+        {% include 'autores/partials/login_messages.html' %}
+        <div class="authors-dashboard-container">
+
+            {% include 'global/partials/forms.html' %}
+
+            <!--
+
+                    Essa parte sera implementada futuramente
+
+                    <div class="authors-dashboard">
+                        <div class="authors-dashboard-item">
+                            <h3>Testemunhos</h3>
+                            <p>{{ testemunhos }}</p>
+
+                            "fazer um for para mostrar os testemunhos, no maximo os 3 ultimos testemunhos cadastrados, com a possibilidade de clicar e ir para a pagina do testemunho."
+
+                        </div>
+                        <div class="authors-dashboard-item">
+                            <h3>Testemunhos Aprovados</h3>
+                            <p>{{ testemunhos_aprovados }}</p>
+
+                            "fazer um for para mostrar os testemunhos aprovados, no maximo os 3 ultimos testemunhos aprovados, com a possibilidade de clicar e ir para a pagina do testemunho."
+
+                        </div>
+                        <div class="authors-dashboard-item">
+                            <h3>Testemunhos Pendentes</h3>
+                            <p>{{ testemunhos_pendentes }}</p>
+
+                            "fazer um for para mostrar os testemunhos pendentes, no maximo os 3 ultimos testemunhos pendentes, com a possibilidade de clicar e ir para a pagina do testemunho."
+
+                        </div>
+                        <div class="authors-dashboard-item">
+                            <h3>Testemunhos Rejeitados</h3>
+                            <p>{{ testemunhos_rejeitados }}</p>
+
+                            "fazer um for para mostrar os testemunhos rejeitados, no maximo os 3 ultimos testemunhos rejeitados, com a possibilidade de clicar e ir para a pagina do testemunho."
+
+                        </div>
+                    </div>
+                -->
+
+        </div>
+
+    </div>
+
+
+{% endblock content %}
