@@ -2,17 +2,27 @@ from django.urls import path
 
 from . import views
 
-app_name = 'testemunhos'
+app_name = "testemunhos"
 
 urlpatterns = [
-    path('', views.home, name='home'),
-
-    path('testemunhos/busca/',
-         views.busca, name='busca'),
-
-    path('testemunhos/categoria/<int:categoria_id>/',
-         views.categoria, name='categoria'),
-
-    path('testemunhos/<int:id>/',
-         views.testemunho, name='testemunho'),
+    path(
+        "",
+        views.TestemunhoListViewHome.as_view(),
+        name="home"
+    ),
+    path(
+        "testemunhos/busca/",
+        views.TestemunhoListViewBusca.as_view(),
+        name="busca"
+    ),
+    path(
+        "testemunhos/categoria/<int:categoria_id>/",
+        views.TestemunhoListViewCategoria.as_view(),
+        name="categoria"
+    ),
+    path(
+        "testemunhos/<int:pk>/",
+        views.TestemunhoDetail.as_view(),
+        name="testemunho"
+    ),
 ]

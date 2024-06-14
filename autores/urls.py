@@ -13,17 +13,17 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path(
         'dashboard/testemunho/new/',
-        views.dashboard_testemunho_new,
+        views.DashboardTestemunho.as_view(),
         name='dashboard_testemunho_new'
     ),
     path(
         'dashboard/testemunho/delete/',
-        views.dashboard_testemunho_delete,
+        views.DashboardTestemunhoDelete.as_view(),
         name='dashboard_testemunho_delete'
     ),
     path(
         'dashboard/testemunho/<int:id>/edit/',
-        views.dashboard_testemunho_edit,
+        views.DashboardTestemunho.as_view(),
         name='dashboard_testemunho_edit'
     ),
 

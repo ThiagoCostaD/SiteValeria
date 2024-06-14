@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.urls import reverse
+from django.utils.text import slugify
 
 
 class Categoria(models.Model):
@@ -55,3 +57,13 @@ class Testemunho(models.Model):
 
     def __str__(self):
         return self.titulo
+
+    def get_absolute_url(self):
+        return reverse('testemunhos:testemunho', args=(self.id,))
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            slug = f'{slugify(self.titulo)}'
+            self.slug = slug
+
+        super().save(*args, **kwargs)
