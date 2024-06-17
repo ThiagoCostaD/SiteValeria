@@ -20,7 +20,13 @@ class TestemunhoListViewBase(ListView):
     context_object_name = 'testemunhos'
     ordering = ['-id']
     template_name = 'testemunhos/pages/home.html'
-    queryset = Testemunho.objects.filter(publicado=True)
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        qs = qs.filter(publicado=True)
+        qs = qs.prefetch_related('categoria', 'autor')
+
+        return qs
 
     def get_context_data(self, *args, **kwargs):
         ctx = super().get_context_data(*args, **kwargs)
